@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async'
+import { useEffect } from 'react'
 
 interface SEOProps {
   title?: string
@@ -23,48 +23,75 @@ interface SEOProps {
  * ```
  */
 export function SEO({
-  title = 'WeForward - Modern React Development',
-  description = 'Build amazing web applications with React, Vite, Tailwind CSS, and modern development tools.',
-  keywords = 'React, TypeScript, Vite, Tailwind CSS, Web Development',
-  ogImage = 'https://weforward.dev/og-image.jpg',
+  title = 'WeForward - Professional Logistics Solutions',
+  description = 'WeForward delivers exceptional logistics services across Air, Road, Sea, and Rail transport. Founded in 2009, we provide reliable cargo shipping with 35K+ successful shipments.',
+  keywords = 'logistics, cargo shipping, air transport, road transport, sea transport, rail transport, WeForward, shipping solutions',
+  ogImage = '/favicon.png',
   canonicalUrl,
   noIndex = false
 }: SEOProps) {
   const fullTitle = title.includes('WeForward') ? title : `${title} | WeForward`
 
-  return (
-    <Helmet>
-      {/* Basic Meta Tags */}
-      <title>{fullTitle}</title>
-      <meta name="description" content={description} />
-      <meta name="keywords" content={keywords} />
+  useEffect(() => {
+    // Update document title
+    document.title = fullTitle
+
+    // Helper function to update or create meta tags
+    const updateMetaTag = (name: string, content: string, property?: boolean) => {
+      const selector = property ? `meta[property="${name}"]` : `meta[name="${name}"]`
+      let meta = document.querySelector(selector) as HTMLMetaElement
       
-      {/* Robots */}
-      <meta name="robots" content={noIndex ? 'noindex, nofollow' : 'index, follow'} />
-      
-      {/* Open Graph */}
-      <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={ogImage} />
-      <meta property="og:type" content="website" />
-      <meta property="og:site_name" content="WeForward" />
-      
-      {/* Twitter Card */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={ogImage} />
-      
-      {/* Canonical URL */}
-      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-      
-      {/* Additional SEO tags */}
-      <meta name="author" content="WeForward Team" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta httpEquiv="Content-Language" content="en" />
-      <meta name="theme-color" content="#1e40af" />
-    </Helmet>
-  )
+      if (!meta) {
+        meta = document.createElement('meta')
+        if (property) {
+          meta.setAttribute('property', name)
+        } else {
+          meta.setAttribute('name', name)
+        }
+        document.head.appendChild(meta)
+      }
+      meta.setAttribute('content', content)
+    }
+
+    // Update meta tags
+    updateMetaTag('description', description)
+    updateMetaTag('keywords', keywords)
+    updateMetaTag('robots', noIndex ? 'noindex, nofollow' : 'index, follow')
+    updateMetaTag('author', 'WeForward Team')
+    updateMetaTag('theme-color', '#309f69')
+
+    // Open Graph tags
+    updateMetaTag('og:title', fullTitle, true)
+    updateMetaTag('og:description', description, true)
+    updateMetaTag('og:image', ogImage, true)
+    updateMetaTag('og:type', 'website', true)
+    updateMetaTag('og:site_name', 'WeForward', true)
+
+    // Twitter Card tags
+    updateMetaTag('twitter:card', 'summary_large_image')
+    updateMetaTag('twitter:title', fullTitle)
+    updateMetaTag('twitter:description', description)
+    updateMetaTag('twitter:image', ogImage)
+
+    // Canonical URL
+    if (canonicalUrl) {
+      let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement
+      if (!canonical) {
+        canonical = document.createElement('link')
+        canonical.setAttribute('rel', 'canonical')
+        document.head.appendChild(canonical)
+      }
+      canonical.setAttribute('href', canonicalUrl)
+    }
+
+    // Cleanup function
+    return () => {
+      // Optional: Remove dynamically added meta tags on component unmount
+      // This is generally not necessary for SPAs but can be useful in some cases
+    }
+  }, [fullTitle, description, keywords, ogImage, canonicalUrl, noIndex])
+
+  return null // This component doesn't render any visible content
 }
 
 /**
@@ -81,6 +108,42 @@ export const generateStructuredData = {
       "@type": "SearchAction",
       "target": `${url}/search?q={search_term_string}`,
       "query-input": "required name=search_term_string"
+    }
+  }),
+
+  organization: (name: string, url: string, logo: string, description: string) => ({
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": name,
+    "url": url,
+    "logo": {
+      "@type": "ImageObject",
+      "url": logo
+    },
+    "description": description,
+    "foundingDate": "2009",
+    "serviceArea": "Global",
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Logistics Services",
+      "itemListElement": [
+        {
+          "@type": "OfferCatalog",
+          "name": "Air Transport"
+        },
+        {
+          "@type": "OfferCatalog", 
+          "name": "Road Transport"
+        },
+        {
+          "@type": "OfferCatalog",
+          "name": "Sea Transport"
+        },
+        {
+          "@type": "OfferCatalog",
+          "name": "Rail Transport"
+        }
+      ]
     }
   }),
 
@@ -103,25 +166,8 @@ export const generateStructuredData = {
       "name": "WeForward",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://weforward.dev/logo.png"
+        "url": "/favicon.png"
       }
-    }
-  }),
-
-  product: (name: string, description: string, price: string, currency: string = 'USD') => ({
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": name,
-    "description": description,
-    "brand": {
-      "@type": "Brand",
-      "name": "WeForward"
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": price,
-      "priceCurrency": currency,
-      "availability": "https://schema.org/InStock"
     }
   })
 }
@@ -134,11 +180,19 @@ interface StructuredDataProps {
 }
 
 export function StructuredData({ data }: StructuredDataProps) {
-  return (
-    <Helmet>
-      <script type="application/ld+json">
-        {JSON.stringify(data)}
-      </script>
-    </Helmet>
-  )
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.type = 'application/ld+json'
+    script.textContent = JSON.stringify(data)
+    document.head.appendChild(script)
+
+    return () => {
+      // Clean up script on component unmount
+      if (script.parentNode) {
+        script.parentNode.removeChild(script)
+      }
+    }
+  }, [data])
+
+  return null
 }

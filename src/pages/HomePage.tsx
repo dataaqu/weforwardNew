@@ -1,6 +1,7 @@
 import { HeroSection } from '../components/HeroSection'
 import { Services } from '../components/Services'
 import { Contact } from '../components/Contact'
+import { AnimatedTabs } from '../components/AnimatedTabs'
 import { SEO } from '../lib/seo'
 
 export function HomePage() {
@@ -14,10 +15,13 @@ export function HomePage() {
         canonicalUrl="https://weforward.dev"
       />
       
-      <main>
+      <main className="relative">
         <HeroSection />
         <Services />
         <Contact />
+        
+        {/* Animated Navigation Tabs */}
+        <AnimatedTabs />
       </main>
     </>
   )

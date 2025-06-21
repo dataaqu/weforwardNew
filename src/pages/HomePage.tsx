@@ -9,7 +9,7 @@ export function HomePage() {
     <>
       {/* SEO Meta Tags */}
       <SEO 
-        title="WeForward - Logistic solutions"
+        title="WEFORWARD - Logistic solutions"
         description="Transform your ideas into stunning web applications with cutting-edge technology, beautiful design, and seamless user experiences. Expert web development, mobile apps, and digital solutions."
         keywords="web development, mobile apps, UI/UX design, React, TypeScript, digital solutions, software development"
         canonicalUrl="https://weforward.dev"

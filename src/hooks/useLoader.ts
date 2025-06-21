@@ -1,11 +1,19 @@
 import { useState, useEffect } from 'react'
 
 // Import images that need to be preloaded
-import planeImg from '../assets/plane.jpg'
-import roadImg from '../assets/road.jpg'
-import seaImg from '../assets/sea.jpg'
-import railImg from '../assets/rail.jpg'
+import planeImg from '../assets/air freight.webp'
+import roadImg from '../assets/road freight.webp'
+import seaImg from '../assets/sea freight.webp'
+import railImg from '../assets/rail freight.webp'
 import logoImg from '../assets/logo.png'
+
+// Import service images
+import airServiceImg from '../assets/air service.webp'
+import roadServiceImg from '../assets/road service.webp'
+import seaServiceImg from '../assets/sea service.webp'
+import railServiceImg from '../assets/rail service.webp'
+import warehouseServiceImg from '../assets/warehouse service.webp'
+import brokageServiceImg from '../assets/brockage service.webp'
 
 export function useLoader(minLoadTime: number = 3000) {
   const [isLoading, setIsLoading] = useState(true)
@@ -13,7 +21,19 @@ export function useLoader(minLoadTime: number = 3000) {
   const [loadingProgress, setLoadingProgress] = useState(0)
 
   // Critical images that need to be preloaded
-  const criticalImages = [planeImg, roadImg, seaImg, railImg, logoImg]
+  const criticalImages = [
+    planeImg, 
+    roadImg, 
+    seaImg, 
+    railImg, 
+    logoImg,
+    airServiceImg,
+    roadServiceImg,
+    seaServiceImg,
+    railServiceImg,
+    warehouseServiceImg,
+    brokageServiceImg
+  ]
 
   useEffect(() => {
     const preloadImages = () => {

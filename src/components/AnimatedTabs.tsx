@@ -1,5 +1,4 @@
 import { Home, FileText, Phone } from 'lucide-react';
-import { AnimatedBackground } from '@/components/core/animated-background';
 import { useState, useEffect } from 'react';
 
 export function AnimatedTabs() {
@@ -84,36 +83,26 @@ export function AnimatedTabs() {
 
   return (
     <div className='fixed bottom-8 left-1/2 transform -translate-x-1/2 z-40'>
-      <div className='flex w-full space-x-2 rounded-xl bg-white/80 backdrop-blur-md p-2 shadow-lg dark:bg-stone-900/80'>
-        <AnimatedBackground
-          defaultValue={activeTab}
-          className='rounded-lg bg-gradient-to-r from-[#309f69]/20 to-[#2ff9c3]/20 dark:from-[#309f69]/30 dark:to-[#2ff9c3]/30'
-          transition={{
-            type: 'spring',
-            bounce: 0.2,
-            duration: 0.3,
-          }}
-        >
-          {TABS.map((tab) => {
-            const isActive = activeTab === tab.label;
-            return (
-              <button
-                key={tab.label}
-                data-id={tab.label}
-                type='button'
-                onClick={() => handleTabClick(tab)}
-                className={`inline-flex h-12 w-12 items-center justify-center transition-colors duration-300 focus-visible:outline-2 ${
-                  isActive 
-                    ? 'text-[#309f69] dark:text-[#2ff9c3]' 
-                    : 'text-white hover:text-[#309f69] dark:hover:text-[#2ff9c3]'
-                }`}
-                title={tab.label}
-              >
-                {tab.icon}
-              </button>
-            );
-          })}
-        </AnimatedBackground>
+      <div className='flex w-full space-x-2 rounded-xl bg-[#309f69] p-2 shadow-lg'>
+        {TABS.map((tab) => {
+          const isActive = activeTab === tab.label;
+          return (
+            <button
+              key={tab.label}
+              data-id={tab.label}
+              type='button'
+              onClick={() => handleTabClick(tab)}
+              className={`inline-flex h-12 w-12 items-center justify-center rounded-lg transition-all duration-300 transform ${
+                isActive 
+                  ? 'text-white bg-white/20 scale-110 shadow-md' 
+                  : 'text-white/70 hover:text-white hover:bg-white/10 hover:scale-105'
+              }`}
+              title={tab.label}
+            >
+              {tab.icon}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

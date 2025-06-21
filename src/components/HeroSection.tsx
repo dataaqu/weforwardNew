@@ -1,15 +1,16 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
+import { useTheme } from './theme-provider'
 import {
   Carousel,
   CarouselContent,
   CarouselIndicator,
   CarouselItem,
 } from '../components/core/carousel'
-import planeImg from '../assets/plane.jpg'
-import roadImg from '../assets/road.jpg'
-import seaImg from '../assets/sea.jpg'
-import railImg from '../assets/rail.jpg'
+import planeImg from '../assets/air freight.webp'
+import roadImg from '../assets/road freight.webp'
+import seaImg from '../assets/sea freight.webp'
+import railImg from '../assets/rail freight.webp'
 
 // Rotating Words Component
 const RotateWords = ({
@@ -90,6 +91,8 @@ const useCounter = (end: number, duration: number = 2000, delay: number = 0) => 
 }
 
 export function HeroSection() {
+  const { theme } = useTheme()
+  
   // Counter values
   const shipmentsCount = useCounter(35000, 2500, 1000) // 35K shipments, 2.5s duration, 1s delay
   const partnersCount = useCounter(1000, 2500, 1100) // 1K partners, 2.5s duration, 1.1s delay
@@ -99,7 +102,9 @@ export function HeroSection() {
 
 
   return (
-    <section id="home" className="relative min-h-screen bg-stone-950 overflow-hidden pt-12">
+    <section id="home" className={`relative min-h-screen overflow-hidden pt-12 ${
+      theme === 'dark' ? 'bg-stone-950' : 'bg-neutral-50'
+    }`}>
       <div className="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 h-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center h-full">
           {/* Left Content - 1/2 width */}
@@ -111,7 +116,9 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.4 }}
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight"
+              className={`text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight ${
+                theme === 'dark' ? 'text-white' : 'text-black'
+              }`}
             >
               <span className="block mb-2">You Deal</span>
               <RotateWords 
@@ -129,7 +136,9 @@ export function HeroSection() {
                 delay: 0.6,
                 ease: "easeOut"
               }}
-              className="text-lg sm:text-xl text-stone-300 leading-relaxed"
+              className={`text-lg sm:text-xl leading-relaxed ${
+                theme === 'dark' ? 'text-stone-300' : 'text-gray-700'
+              }`}
             >
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3] font-bold">
                 WEFORWARD
@@ -154,7 +163,9 @@ export function HeroSection() {
                 }}
                 className="text-start"
               >
-                <div className="text-xl sm:text-2xl font-bold text-white mb-1">
+                <div className={`text-xl sm:text-2xl font-bold mb-1 ${
+                  theme === 'dark' ? 'text-white' : 'text-black'
+                }`}>
                   {shipmentsCount.toLocaleString()}
                   <motion.span 
                     initial={{ opacity: 0, filter: "blur(10px)" }}
@@ -169,7 +180,9 @@ export function HeroSection() {
                     +
                   </motion.span>
                 </div>
-                <div className="text-xs text-stone-400 font-medium">
+                <div className={`text-xs font-medium ${
+                  theme === 'dark' ? 'text-stone-400' : 'text-gray-600'
+                }`}>
                   Cargo shipped
                 </div>
               </motion.div>
@@ -184,7 +197,9 @@ export function HeroSection() {
                 }}
                 className="text-center"
               >
-                <div className="text-xl sm:text-2xl font-bold text-white mb-1">
+                <div className={`text-xl sm:text-2xl font-bold mb-1 ${
+                  theme === 'dark' ? 'text-white' : 'text-black'
+                }`}>
                   {partnersCount}
                   <motion.span 
                     initial={{ opacity: 0, filter: "blur(10px)" }}
@@ -199,7 +214,9 @@ export function HeroSection() {
                     +
                   </motion.span>
                 </div>
-                <div className="text-xs text-stone-400 font-medium">
+                <div className={`text-xs font-medium ${
+                  theme === 'dark' ? 'text-stone-400' : 'text-gray-600'
+                }`}>
                   Trusted Partners
                 </div>
               </motion.div>
@@ -214,7 +231,9 @@ export function HeroSection() {
                 }}
                 className="text-end"
               >
-                <div className="text-xl sm:text-2xl font-bold text-white mb-1">
+                <div className={`text-xl sm:text-2xl font-bold mb-1 ${
+                  theme === 'dark' ? 'text-white' : 'text-black'
+                }`}>
                   {customersCount.toLocaleString()}
                   <motion.span 
                     initial={{ opacity: 0, filter: "blur(10px)" }}
@@ -229,7 +248,9 @@ export function HeroSection() {
                     +
                   </motion.span>
                 </div>
-                <div className="text-xs text-stone-400 font-medium">
+                <div className={`text-xs font-medium ${
+                  theme === 'dark' ? 'text-stone-400' : 'text-gray-600'
+                }`}>
                   Happy Customers
                 </div>
               </motion.div>

@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { Globe } from 'lucide-react'
+import { useTheme } from './theme-provider'
+import ToggleSwitch from './ToggleSwitch'
 import logo from '../assets/logo.png'
+import whiteText from '../assets/white-text.png'
+import blackIcon from '../assets/black-icon.png'
+import blackText from '../assets/black-text.png'
 
 const navigation = [
   { name: 'Home', href: 'home', isExternal: false },
@@ -13,6 +19,8 @@ const navigation = [
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrollY, setScrollY] = useState(0)
+  const [language, setLanguage] = useState<'en' | 'ka'>('en')
+  const { theme, setTheme } = useTheme()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -89,9 +97,13 @@ export function Header() {
         ease: [0.25, 0.25, 0.25, 1],
         delay: 0.2 
       }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 shadow-xl border-b ${blurAmount} ${borderOpacity}`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 shadow-xl border-b ${blurAmount} ${
+        theme === 'dark' ? borderOpacity : 'border-gray-200'
+      }`}
       style={{ 
-        backgroundColor: `rgba(0, 0, 0, ${headerOpacity})` // black with dynamic opacity
+        backgroundColor: theme === 'dark' 
+          ? `rgba(0, 0, 0, ${headerOpacity})` 
+          : `rgba(250, 250, 250, ${headerOpacity})`
       }}
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -120,14 +132,14 @@ export function Header() {
               className="w-8 h-8 flex items-center justify-center"
             >
               <img 
-                src={logo} 
+                src={theme === 'dark' ? logo : blackIcon} 
                 alt="WeForward Logo" 
                 className="w-8 h-8 object-contain"
               />
             </motion.div>
             
             {/* Text - Slides from right */}
-            <motion.span 
+            <motion.div 
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ 
@@ -135,10 +147,14 @@ export function Header() {
                 ease: "easeOut",
                 delay: 0.5 
               }}
-              className="text-lg font-bold text-white"
+              className="h-10 flex items-center justify-center"
             >
-              WEFORWARD
-            </motion.span>
+              <img 
+                src={theme === 'dark' ? whiteText : blackText} 
+                alt="WeForward" 
+                className="h-16 w-auto object-contain"
+              />
+            </motion.div>
           </motion.div>
 
           {/* Desktop Navigation */}
@@ -152,18 +168,73 @@ export function Header() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="text-gray-300 text-lg hover:text-white font-medium transition-all duration-300 relative group"
+                className={`text-lg font-medium transition-all duration-300 relative group ${
+                  theme === 'dark' 
+                    ? 'text-gray-300 hover:text-white' 
+                    : 'text-black hover:text-gray-700'
+                }`}
               >
                 {item.name}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#309f69] to-[#2ff9c3] transition-all duration-300 group-hover:w-full"></span>
               </motion.button>
             ))}
+            
+            {/* Toggle Buttons */}
+            <div className="flex items-center space-x-8">
+              {/* Language Toggle */}
+              <motion.button
+                onClick={() => setLanguage(language === 'en' ? 'ka' : 'en')}
+                whileHover={{ 
+                  scale: 1.05
+                }}
+                whileTap={{ scale: 0.95 }}
+                transition={{
+                  duration: 0.3,
+                  ease: "easeInOut"
+                }}
+                className={`p-2 rounded-lg transition-all duration-200 flex items-center space-x-1 ${
+                  theme === 'dark' 
+                    ? 'text-gray-300 hover:text-white' 
+                    : 'text-black hover:text-gray-700'
+                }`}
+                aria-label="Toggle language"
+              >
+                <motion.div
+                  animate={{ rotate: language === 'en' ? 0 : 180 }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                >
+                  <Globe size={16} />
+                </motion.div>
+                <motion.span 
+                  key={language}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-sm font-medium"
+                >
+                  {language === 'en' ? 'ENG' : 'ქარ'}
+                </motion.span>
+              </motion.button>
+              
+              {/* Theme Toggle Switch */}
+              <div className="flex items-center">
+                <ToggleSwitch
+                  defaultChecked={theme === 'dark'}
+                  onChange={(value) => setTheme(value ? 'dark' : 'light')}
+                />
+              </div>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-white hover:text-gray-300 focus:outline-none transition-colors duration-200 p-6  z-50"
+            className={`md:hidden focus:outline-none transition-colors duration-200 py-6 z-50 ${
+              theme === 'dark' 
+                ? 'text-white hover:text-gray-300' 
+                : 'text-black hover:text-gray-600'
+            }`}
             aria-label="Toggle menu"
             type="button"
           >
@@ -178,26 +249,86 @@ export function Header() {
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-stone-700/50 bg-stone-950/98 backdrop-blur-md"
-          >
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className={`md:hidden border-t backdrop-blur-md ${
+                theme === 'dark' 
+                  ? 'border-stone-700/50 bg-stone-950/98' 
+                  : 'border-gray-200 bg-white/98'
+              }`}
+            >
             <div className="py-4 space-y-1">
               {navigation.map((item) => (
                 <button
                   key={item.name}
                   onClick={() => handleNavigation(item)}
-                  className="block w-full text-left px-4 py-3 text-gray-300 hover:text-white hover:bg-stone-800/50 transition-all duration-200 font-medium"
+                  className={`block w-full text-left px-4 py-3 font-medium transition-all duration-200 ${
+                    theme === 'dark' 
+                      ? 'text-gray-300 hover:text-white hover:bg-stone-800/50' 
+                      : 'text-black hover:text-gray-700 hover:bg-gray-100/50'
+                  }`}
                 >
                   {item.name}
                 </button>
               ))}
+              
+              {/* Mobile Toggle Buttons */}
+              {/* Language Toggle */}
+              <motion.button
+                onClick={() => setLanguage(language === 'en' ? 'ka' : 'en')}
+                whileHover={{ 
+                  scale: 1.05
+                }}
+                whileTap={{ scale: 0.95 }}
+                transition={{
+                  duration: 0.3,
+                  ease: "easeInOut"
+                }}
+                className={`w-full text-left px-4 py-3 font-medium transition-all duration-200 flex items-center space-x-2 ${
+                  theme === 'dark' 
+                    ? 'text-gray-300 hover:text-white hover:bg-stone-800/50' 
+                    : 'text-black hover:text-gray-700 hover:bg-gray-100/50'
+                }`}
+                aria-label="Toggle language"
+              >
+                <motion.div
+                  animate={{ rotate: language === 'en' ? 0 : 180 }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                >
+                  <Globe size={16} />
+                </motion.div>
+                <motion.span 
+                  key={language}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-sm font-medium"
+                >
+                  {language === 'en' ? 'ENG' : 'ქარ'}
+                </motion.span>
+              </motion.button>
+              
+              {/* Theme Toggle */}
+              <div className={`w-full text-left px-4 py-3 font-medium transition-all duration-200 flex items-center justify-end ${
+                theme === 'dark' 
+                  ? 'text-gray-300 hover:bg-stone-800/50' 
+                  : 'text-black hover:bg-gray-100/50'
+              }`}>
+                <ToggleSwitch
+                  defaultChecked={theme === 'dark'}
+                  onChange={(value) => setTheme(value ? 'dark' : 'light')}
+                />
+              </div>
             </div>
           </motion.div>
-        )}
+          )}
+        </AnimatePresence>
       </nav>
     </motion.header>
   )

@@ -1,9 +1,11 @@
 import { motion } from 'framer-motion'
 import { useTheme } from './theme-provider'
+import { useTranslation } from './translation-provider'
 import { FocusCardsDemo } from './focus-cards-demo'
 
 export function Services() {
   const { theme } = useTheme()
+  const { t } = useTranslation()
   
   return (
     <section id="services" className={`py-20 ${
@@ -20,13 +22,8 @@ export function Services() {
           <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${
             theme === 'dark' ? 'text-white' : 'text-black'
           }`}>
-            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3]">Services</span>
+            {t.services.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3]">{t.services.subtitle}</span>
           </h2>
-          <p className={`text-lg max-w-3xl mx-auto ${
-            theme === 'dark' ? 'text-stone-300' : 'text-gray-700'
-          }`}>
-            How We Move Your Business Forward
-          </p>
         </motion.div>
 
         {/* Focus Cards */}

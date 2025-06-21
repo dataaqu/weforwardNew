@@ -2,9 +2,11 @@ import { motion } from 'framer-motion'
 import { useEffect } from 'react'
 import { SEO } from '../lib/seo'
 import { useTheme } from '../components/theme-provider'
+import { useTranslation } from '../components/translation-provider'
 
 export function BlogPage() {
   const { theme } = useTheme()
+  const { t } = useTranslation()
 
   useEffect(() => {
     // Always scroll to top when BlogPage loads
@@ -53,9 +55,9 @@ export function BlogPage() {
                       theme === 'dark' ? 'text-white' : 'text-black'
                     }`}
                   >
-                    Blog Under{" "}
+                    {t.blog.title.split(' ')[0]}{" "}
                     <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3]">
-                      Construction
+                      {t.blog.title.split(' ').slice(1).join(' ')}
                     </span>
                   </motion.h1>
 
@@ -72,11 +74,7 @@ export function BlogPage() {
                       theme === 'dark' ? 'text-stone-300' : 'text-gray-700'
                     }`}
                   >
-                    We're working hard to bring you amazing content about{" "}
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3] font-bold">
-                      logistics news
-                    </span>{" "}
-                    and industry insights. Stay tuned for updates!
+                    {t.blog.subtitle}
                   </motion.p>
                 </motion.div>
               </div>

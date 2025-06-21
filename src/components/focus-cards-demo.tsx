@@ -1,5 +1,6 @@
 import { FocusCards } from "@/components/ui/focus-cards";
 import { motion } from "framer-motion";
+import { useTranslation } from './translation-provider';
 
 // Import service images
 import airServiceImg from '../assets/air service.webp';
@@ -10,36 +11,38 @@ import warehouseServiceImg from '../assets/warehouse service.webp';
 import brokageServiceImg from '../assets/brockage service.webp';
 
 export function FocusCardsDemo() {
+  const { t } = useTranslation();
+  
   const cards = [
     {
-      title: "Air Freight",
+      title: t.services.services.airFreight.title,
       src: airServiceImg,
-      description: "Fast and reliable air cargo services for urgent shipments worldwide. We handle time-sensitive deliveries with precision and care."
+      description: t.services.services.airFreight.description
     },
     {
-      title: "Road Freight",
+      title: t.services.services.roadFreight.title,
       src: roadServiceImg,
-      description: "Comprehensive ground transportation solutions for domestic and international deliveries. Door-to-door service with real-time tracking."
+      description: t.services.services.roadFreight.description
     },
     {
-      title: "Sea Freight",
+      title: t.services.services.seaFreight.title,
       src: seaServiceImg,
-      description: "Cost-effective ocean freight for large volumes and oversized cargo. Full container load (FCL) and less than container load (LCL) options available."
+      description: t.services.services.seaFreight.description
     },
     {
-      title: "Rail freight",
+      title: t.services.services.railFreight.title,
       src: railServiceImg,
-      description: "Eco-friendly rail transport for bulk commodities and containers. Efficient intermodal solutions connecting major trade routes."
+      description: t.services.services.railFreight.description
     },
     {
-      title: "Warehouse Service",
+      title: t.services.services.warehouse.title,
       src: warehouseServiceImg,
-      description: "Modern warehouse facilities with advanced inventory management systems. Secure storage, pick & pack, and distribution services."
+      description: t.services.services.warehouse.description
     },
     {
-      title: "Customs brokerage",
+      title: t.services.services.brokerage.title,
       src: brokageServiceImg,
-      description: "Expert customs brokerage services to ensure smooth border crossings. Complete documentation handling and compliance management."
+      description: t.services.services.brokerage.description
     },
   ];
 

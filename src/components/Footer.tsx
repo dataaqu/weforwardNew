@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Facebook, Linkedin } from 'lucide-react'
 import { useTheme } from './theme-provider'
+import { useTranslation } from './translation-provider'
 import logo from '../assets/logo.png'
 import whiteText from '../assets/white-text.png'
 import blackIcon from '../assets/black-icon.png'
@@ -9,13 +10,14 @@ import blackText from '../assets/black-text.png'
 
 export function Footer() {
   const { theme } = useTheme()
+  const { t } = useTranslation()
   const currentYear = new Date().getFullYear()
 
   const navigationLinks = [
-    { name: 'Home', href: '/', sectionId: 'home' },
-    { name: 'Services', href: '/#services', sectionId: 'services' },
-    { name: 'Contact', href: '/#contact', sectionId: 'contact' },
-    { name: 'Blog', href: '/blog', sectionId: null },
+    { name: 'home', href: '/', sectionId: 'home' },
+    { name: 'services', href: '/#services', sectionId: 'services' },
+    { name: 'contact', href: '/#contact', sectionId: 'contact' },
+    { name: 'blog', href: '/blog', sectionId: null },
   ]
 
   const handleNavClick = (sectionId: string | null) => {
@@ -74,7 +76,7 @@ export function Footer() {
             viewport={{ once: true }}
             className="md:col-span-2 text-center"
           >
-            <ul className={`flex flex-wrap justify-center space-x-8 ${
+            <ul className={`flex flex-wrap justify-center space-x-3 sm:space-x-6 md:space-x-8 ${
               theme === 'dark' ? 'text-stone-300' : 'text-gray-600'
             }`}>
               {navigationLinks.map((link, index) => (
@@ -90,14 +92,14 @@ export function Footer() {
                       onClick={() => handleNavClick(link.sectionId)}
                       className="hover:text-[#309f69] transition-colors duration-200"
                     >
-                      {link.name}
+                      {t.nav[link.name as keyof typeof t.nav]}
                     </button>
                   ) : (
                     <Link 
                       to={link.href}
                       className="hover:text-[#309f69] transition-colors duration-200"
                     >
-                      {link.name}
+                      {t.nav[link.name as keyof typeof t.nav]}
                     </Link>
                   )}
                 </motion.li>
@@ -160,7 +162,7 @@ export function Footer() {
             theme === 'dark' ? 'text-stone-400' : 'text-gray-600'
           }`}
         >
-          <p>&copy; {currentYear} WEFORWARD LLC. All rights reserved. </p>
+          <p>&copy; {currentYear} WEFORWARD LLC. {t.footer.copyright}</p>
         </motion.div>
       </div>
     </footer>

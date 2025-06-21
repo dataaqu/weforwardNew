@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Globe } from 'lucide-react'
 import { useTheme } from './theme-provider'
+import { useTranslation } from './translation-provider'
 import ToggleSwitch from './ToggleSwitch'
 import logo from '../assets/logo.png'
 import whiteText from '../assets/white-text.png'
@@ -10,17 +11,17 @@ import blackIcon from '../assets/black-icon.png'
 import blackText from '../assets/black-text.png'
 
 const navigation = [
-  { name: 'Home', href: 'home', isExternal: false },
-  { name: 'Services', href: 'services', isExternal: false },
-  { name: 'Contact', href: 'contact', isExternal: false },
-  { name: 'Blog', href: '/blog', isExternal: true },
+  { name: 'home', href: 'home', isExternal: false },
+  { name: 'services', href: 'services', isExternal: false },
+  { name: 'contact', href: 'contact', isExternal: false },
+  { name: 'blog', href: '/blog', isExternal: true },
 ]
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrollY, setScrollY] = useState(0)
-  const [language, setLanguage] = useState<'en' | 'ka'>('en')
   const { theme, setTheme } = useTheme()
+  const { language, setLanguage, t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -174,7 +175,7 @@ export function Header() {
                     : 'text-black hover:text-gray-700'
                 }`}
               >
-                {item.name}
+                {t.nav[item.name as keyof typeof t.nav]}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#309f69] to-[#2ff9c3] transition-all duration-300 group-hover:w-full"></span>
               </motion.button>
             ))}
@@ -273,7 +274,7 @@ export function Header() {
                       : 'text-black hover:text-gray-700 hover:bg-gray-100/50'
                   }`}
                 >
-                  {item.name}
+                  {t.nav[item.name as keyof typeof t.nav]}
                 </button>
               ))}
               

@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { useTheme } from './theme-provider'
+import { useTranslation } from './translation-provider'
 import {
   Carousel,
   CarouselContent,
@@ -16,9 +17,11 @@ import railImg from '../assets/rail freight.webp'
 const RotateWords = ({
   text = "WE Deliver",
   words = ["Air", "Road", "Sea", "Rail"],
+  language = 'en'
 }: {
   text: string
   words: string[]
+  language?: 'en' | 'ka'
 }) => {
   const [index, setIndex] = useState(0)
 
@@ -31,7 +34,7 @@ const RotateWords = ({
   }, [words.length])
 
   return (
-    <div className="flex items-center gap-2 ">
+    <div className="flex items-baseline gap-2">
       <span>{text}</span>
       <AnimatePresence mode="wait">
         <motion.span
@@ -40,7 +43,10 @@ const RotateWords = ({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
-          className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3]"
+          className={`text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3] ${
+            language === 'ka' ? 'text-2xl sm:text-3xl lg:text-4xl leading-tight' : ''
+          }`}
+          style={language === 'ka' ? { lineHeight: '1.2' } : {}}
         >
           {words[index]}
         </motion.span>
@@ -92,6 +98,7 @@ const useCounter = (end: number, duration: number = 2000, delay: number = 0) => 
 
 export function HeroSection() {
   const { theme } = useTheme()
+  const { language, t } = useTranslation()
   
   // Counter values
   const shipmentsCount = useCounter(35000, 2500, 1000) // 35K shipments, 2.5s duration, 1s delay
@@ -123,7 +130,8 @@ export function HeroSection() {
               <span className="block mb-2">You Deal</span>
               <RotateWords 
                 text="We Deliver " 
-                words={["Air", "Road", "Sea", "Rail"]} 
+                words={language === 'en' ? ["Air", "Road", "Sea", "Rail"] : ["საჰაერო", "სახმელეთო", "საზღვაო", "სარკინიგზო"]}
+                language={language}
               />
             </motion.h1>
 
@@ -140,10 +148,21 @@ export function HeroSection() {
                 theme === 'dark' ? 'text-stone-300' : 'text-gray-700'
               }`}
             >
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3] font-bold">
-                WEFORWARD
-              </span>{" "}
-              founded in 2009, we take pride in our exceptional journey, rooted in experience, loyalty, and teamwork. Our seasoned team brings decades of industry expertise, ensuring your cargo is in capable hands. Our unwavering commitment to loyalty ensures we prioritize your interests above all else, while our seamless teamwork guarantees efficient and reliable shipping solutions. Trust us to navigate your logistics needs with precision and dedication, making your cargo's journey our top priority.
+              {language === 'en' ? (
+                <>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3] font-bold">
+                    WEFORWARD
+                  </span>{" "}
+                  founded in 2009, we take pride in our exceptional journey, rooted in experience, loyalty, and teamwork. Our seasoned team brings decades of industry expertise, ensuring your cargo is in capable hands. Our unwavering commitment to loyalty ensures we prioritize your interests above all else, while our seamless teamwork guarantees efficient and reliable shipping solutions. Trust us to navigate your logistics needs with precision and dedication, making your cargo's journey our top priority.
+                </>
+              ) : (
+                <>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3] font-bold">
+                    WEFORWARD
+                  </span>{" "}
+                  {t.hero.description.replace('weforward ', '')}
+                </>
+              )}
             </motion.p>
 
             {/* Statistics */}
@@ -183,7 +202,7 @@ export function HeroSection() {
                 <div className={`text-xs font-medium ${
                   theme === 'dark' ? 'text-stone-400' : 'text-gray-600'
                 }`}>
-                  Cargo shipped
+                  {t.hero.stats.cargoShipped}
                 </div>
               </motion.div>
 
@@ -217,7 +236,7 @@ export function HeroSection() {
                 <div className={`text-xs font-medium ${
                   theme === 'dark' ? 'text-stone-400' : 'text-gray-600'
                 }`}>
-                  Trusted Partners
+                  {t.hero.stats.trustedPartners}
                 </div>
               </motion.div>
 
@@ -251,7 +270,7 @@ export function HeroSection() {
                 <div className={`text-xs font-medium ${
                   theme === 'dark' ? 'text-stone-400' : 'text-gray-600'
                 }`}>
-                  Happy Customers
+                  {t.hero.stats.happyCustomers}
                 </div>
               </motion.div>
             </motion.div>

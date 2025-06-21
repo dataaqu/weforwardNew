@@ -2,11 +2,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Mail, Phone, MapPin, Send, Facebook, Linkedin, CheckCircle, X } from 'lucide-react'
 import { useState, useRef } from 'react'
 import { useTheme } from './theme-provider'
+import { useTranslation } from './translation-provider'
 import emailjs from '@emailjs/browser'
 import { emailjsConfig } from '../config/emailjs'
 
 export function Contact() {
   const { theme } = useTheme()
+  const { t } = useTranslation()
   const formRef = useRef<HTMLFormElement>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
@@ -109,7 +111,7 @@ export function Contact() {
           <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${
             theme === 'dark' ? 'text-white' : 'text-black'
           }`}>
-            Get In <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3]">Touch</span>
+            {t.contact.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3]">{t.contact.titleHighlight}</span>
           </h2>
       
         </motion.div>
@@ -127,12 +129,12 @@ export function Contact() {
               <h3 className={`text-2xl font-bold mb-6 ${
                 theme === 'dark' ? 'text-white' : 'text-black'
               }`}>
-                Let's Build Your Logistics Solution
+                {t.contact.subtitle}
               </h3>
               <p className={`mb-8 ${
                 theme === 'dark' ? 'text-stone-300' : 'text-gray-700'
               }`}>
-                Our team  is ready to optimize your supply chain and accelerate your business growth.
+                {t.contact.description}
               </p>
             </div>
 
@@ -238,7 +240,7 @@ export function Contact() {
             >
               <h4 className={`text-lg font-semibold mb-4 ${
                 theme === 'dark' ? 'text-white' : 'text-black'
-              }`}>Follow Us</h4>
+              }`}>{t.contact.details.followUs}</h4>
               <div className="flex space-x-4">
                 <a 
                   href="https://www.facebook.com/weforwardllc" 
@@ -290,7 +292,7 @@ export function Contact() {
               <h3 className={`text-xl font-bold mb-2 ${
                 theme === 'dark' ? 'text-white' : 'text-black'
               }`}>
-                Send us a Message
+                {t.contact.form.title}
               </h3>
             
             </motion.div>
@@ -308,7 +310,7 @@ export function Contact() {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    placeholder="First Name"
+                    placeholder={t.contact.form.firstName}
                     required
                     className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#309f69] focus:border-transparent transition-all duration-200 ${
                       theme === 'dark' 
@@ -328,7 +330,7 @@ export function Contact() {
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
-                    placeholder="Last Name"
+                    placeholder={t.contact.form.lastName}
                     required
                     className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#309f69] focus:border-transparent transition-all duration-200 ${
                       theme === 'dark' 
@@ -350,7 +352,7 @@ export function Contact() {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  placeholder="Email Address"
+                  placeholder={t.contact.form.email}
                   required
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#309f69] focus:border-transparent transition-all duration-200 ${
                     theme === 'dark' 
@@ -371,7 +373,7 @@ export function Contact() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  placeholder="Phone Number"
+                  placeholder={t.contact.form.phone}
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#309f69] focus:border-transparent transition-all duration-200 ${
                     theme === 'dark' 
                       ? 'border-stone-600 bg-stone-800 text-white placeholder-stone-400' 
@@ -400,7 +402,7 @@ export function Contact() {
                   value={formData.message}
                   onChange={handleInputChange}
                   rows={4}
-                  placeholder="Tell us about your logistics needs..."
+                  placeholder={t.contact.form.messagePlaceholder}
                   required
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#309f69] focus:border-transparent transition-all duration-200 resize-none ${
                     theme === 'dark' 
@@ -426,7 +428,7 @@ export function Contact() {
                 }`}
               >
                 <Send size={20} />
-                <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
+                <span>{isSubmitting ? t.contact.form.sending : t.contact.form.sendButton}</span>
               </motion.button>
 
               {/* Status Messages */}
@@ -436,7 +438,7 @@ export function Contact() {
                   animate={{ opacity: 1, y: 0 }}
                   className="text-green-600 dark:text-green-400 text-center p-3 bg-green-100 dark:bg-green-900/20 rounded-lg border border-green-300 dark:border-green-700"
                 >
-                  ✅ Message sent successfully! We'll get back to you soon.
+                  ✅ {t.contact.success.title.replace('!', '')}! {t.contact.success.message.split('.')[0]}.
                 </motion.div>
               )}
 
@@ -446,7 +448,7 @@ export function Contact() {
                   animate={{ opacity: 1, y: 0 }}
                   className="text-red-600 dark:text-red-400 text-center p-3 bg-red-100 dark:bg-red-900/20 rounded-lg border border-red-300 dark:border-red-700"
                 >
-                  ❌ Failed to send message. Please try again or contact us directly.
+                  ❌ {t.contact.error.message}
                 </motion.div>
               )}
             </form>
@@ -517,15 +519,14 @@ export function Contact() {
                 <h3 className={`text-2xl font-bold mb-4 ${
                   theme === 'dark' ? 'text-white' : 'text-black'
                 }`}>
-                  Message Sent Successfully! 
+                  {t.contact.success.title}
                 </h3>
                 
                 <p className={`text-lg mb-6 leading-relaxed ${
                   theme === 'dark' ? 'text-stone-300' : 'text-gray-700'
                 }`}>
-Thank you! Your inquiry has been successfully received.
-Our team will contact you shortly with more detailed information.
-We appreciate you choosing us!                </p>
+                  {t.contact.success.message}
+                </p>
 
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -533,7 +534,7 @@ We appreciate you choosing us!                </p>
                   onClick={() => setSubmitStatus('idle')}
                   className="w-full bg-gradient-to-r from-[#309f69] to-[#2ff9c3] text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 hover:shadow-lg"
                 >
-                  Thank You!
+                  {t.contact.success.button}
                 </motion.button>
               </motion.div>
             </motion.div>

@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "npm run security-check && tsc -b && vite build",
     "build:prod": "npm run security-check && tsc -b && vite build --mode production",
+    "build:netlify": "tsc -b && vite build",
     "security-check": "bash scripts/security-check.sh",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -26,7 +27,6 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.58.1",
-    "react-quill": "^2.0.0",
     "react-router-dom": "^7.6.2",
     "tailwind-merge": "^3.3.1",
     "yup": "^1.6.1",

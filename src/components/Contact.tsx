@@ -111,7 +111,7 @@ export function Contact() {
           <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${
             theme === 'dark' ? 'text-white' : 'text-black'
           }`}>
-            {t.contact.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3]">{t.contact.titleHighlight}</span>
+            {t.contact.title && `${t.contact.title} `}<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3]">{t.contact.titleHighlight}</span>
           </h2>
       
         </motion.div>

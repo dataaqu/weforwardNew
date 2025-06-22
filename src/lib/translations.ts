@@ -10,11 +10,7 @@ export interface Translations {
   
   // Hero Section
   hero: {
-    title: string
-    subtitle: string
     description: string
-    ctaButton: string
-    learnMore: string
     stats: {
       cargoShipped: string
       trustedPartners: string
@@ -56,7 +52,7 @@ export interface Translations {
   
   // Contact
   contact: {
-    title: string
+    title?: string
     titleHighlight: string
     subtitle: string
     description: string
@@ -88,11 +84,6 @@ export interface Translations {
   
   // Footer
   footer: {
-    description: string
-    quickLinks: string
-    services: string
-    contact: string
-    followUs: string
     copyright: string
   }
   
@@ -100,9 +91,6 @@ export interface Translations {
   blog: {
     title: string
     subtitle: string
-    backToHome: string
-    readingTime: string
-    category: string
   }
 }
 
@@ -115,11 +103,7 @@ export const translations: { en: Translations; ka: Translations } = {
       blog: "Blog"
     },
     hero: {
-      title: "Your Trusted",
-      subtitle: "Logistics Partner",
       description: "Streamline your supply chain with our comprehensive logistics solutions. From air and sea freight to warehousing and customs brokerage.",
-      ctaButton: "Get Started",
-      learnMore: "Learn More",
       stats: {
         cargoShipped: "Cargo shipped",
         trustedPartners: "Trusted Partners",
@@ -187,19 +171,11 @@ export const translations: { en: Translations; ka: Translations } = {
       }
     },
     footer: {
-      description: "Your trusted logistics partner providing comprehensive supply chain solutions worldwide.",
-      quickLinks: "Quick Links",
-      services: "Services", 
-      contact: "Contact",
-      followUs: "Follow Us",
       copyright: "All rights reserved."
     },
     blog: {
       title: "Under Construction",
-      subtitle: "We're working hard to bring you amazing content about logistics trends and industry insights. Stay tuned for updates!",
-      backToHome: "Back to Home",
-      readingTime: "min read",
-      category: "Category"
+      subtitle: "We're working hard to bring you amazing content about logistics trends and industry insights. Stay tuned for updates!"
     }
   },
   ka: {
@@ -210,11 +186,7 @@ export const translations: { en: Translations; ka: Translations } = {
       blog: "ბლოგი"
     },
     hero: {
-      title: "თქვენ იღებთ შეკვეთას",
-      subtitle: "ჩვენ ვაწვდით ტვირთს",
       description: " 2009 წლიდან არის თქვენი საიმედო პარტნიორი გადაზიდვების სფეროში. პროფესიონალების გუნდი, რომელიც წლებია ტვირთის ტრანსპორტირების სფეროში მოღვაწეობენ თქვენი ტვირთის დროული და უსაფრთხო მიწოდების გარანტია. ჩვენ კი მუდამ მზად ვართ შემოგთავაზოთ სწორი ლოგისტიკური გადაწყვეტილება და საუკეთესო ტარიფი, რომელიც მაქსიმალურად იქნება მორგებული თქვენს საჭიროებებზე.",
-      ctaButton: "დაიწყეთ",
-      learnMore: "გაიგეთ მეტი",
       stats: {
         cargoShipped: "გადაზიდული ტვირთი",
         trustedPartners: "სანდო პარტნიორები",
@@ -252,10 +224,9 @@ export const translations: { en: Translations; ka: Translations } = {
       }
     },
     contact: {
-      title: "დაგვი", 
-      titleHighlight: "კავშირდით",
-      subtitle: "მოდით ავაშენოთ თქვენი ლოგისტიკური გადაწყვეტა",
-      description: "ჩვენი გუნდი მზადაა ოპტიმიზაცია გაუწიოს თქვენს მიწოდების ჯაჭვს და აჩქაროს თქვენი ბიზნესის ზრდა.",
+      titleHighlight: "დაგვიკავშირდით",
+      subtitle: "თქვენზე მორგებული  მომსახურებისთვის",
+      description: "ჩვენი გუნდი მზადაა დაგეხმაროთ დაა თქვენი მიწოდების ჯაჭვი და განავითაროთ თქვენი ბიზნესი.",
       form: {
         title: "გამოგვიგზავნეთ შეტყობინება",
         firstName: "სახელი",
@@ -264,7 +235,7 @@ export const translations: { en: Translations; ka: Translations } = {
         phone: "ტელეფონის ნომერი",
         service: "სერვისის ინტერესი",
         message: "შეტყობინება",
-        messagePlaceholder: "მოგვითხარით თქვენი ლოგისტიკური საჭიროებების შესახებ...",
+        messagePlaceholder: "გვიამბეთ თქვენი საჭიროებების შესახებ...",
         sendButton: "გაგზავნა",
         sending: "იგზავნება...",
         selectService: "აირჩიეთ სერვისი"
@@ -274,27 +245,19 @@ export const translations: { en: Translations; ka: Translations } = {
       },
       success: {
         title: "შეტყობინება წარმატებით გაიგზავნა!",
-        message: "მადლობთ! თქვენი მოთხოვნა წარმატებით მივიღეთ. ჩვენი გუნდი მალე დაგიკავშირდებათ დეტალური ინფორმაციით. მადლობთ, რომ ჩვენ არჩიეთ!",
+        message: "მადლობთ! თქვენი მოთხოვნა წარმატებით მივიღეთ. ჩვენი გუნდი მალე დაგიკავშირდებათ.",
         button: "მადლობა!"
       },
       error: {
-        message: "შეტყობინების გაგზავნა ვერ მოხერხდა. გთხოვთ სცადოთ ხელახლა ან დაგვიკავშირდით პირდაპირ."
+        message: "შეტყობინების გაგზავნა ვერ მოხერხდა. გთხოვთ სცადოთ ხელახლა ან დაგვიკავშირდით."
       }
     },
     footer: {
-      description: "თქვენი სანდო ლოგისტიკური პარტნიორი, რომელიც უზრუნველყოფს ყოვლისმომცველ მიწოდების ჯაჭვის გადაწყვეტებს მთელ მსოფლიოში.",
-      quickLinks: "სწრაფი ბმულები",
-      services: "სერვისები",
-      contact: "კონტაქტი", 
-      followUs: "გამოგვყევით",
       copyright: "ყველა უფლება დაცულია."
     },
     blog: {
       title: "მშენებლობის პროცესში",
-      subtitle: "ჩვენ ვმუშაობთ, რომ მოგაწოდოთ საინტერესო კონტენტი ლოგისტიკის ტენდენციებისა და ინდუსტრიის ინსაიტების შესახებ. დარჩით ჩვენთან განახლებებისთვის!",
-      backToHome: "უკან მთავარზე",
-      readingTime: "წუთი კითხვა",
-      category: "კატეგორია"
+      subtitle: "ჩვენ ვმუშაობთ, რომ მოგაწოდოთ საინტერესო კონტენტი ლოგისტიკის ტენდენციებისა და ინდუსტრიის ინსაიტების შესახებ. დარჩით ჩვენთან განახლებებისთვის!"
     }
   }
 }

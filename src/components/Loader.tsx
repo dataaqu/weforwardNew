@@ -47,18 +47,18 @@ export function Loader() {
             delay: 0.8,
             ease: "easeOut" 
           }}
-          className="space-y-4"
+          className="space-y-4 px-4"
         >
-          <h1 className="text-4xl lg:text-5xl font-bold text-white">
-            <TextEffect 
-              per='char' 
-              preset='fade'
-              delay={1.0}
-              className="text-white"
-            >
-              You Deal
-            </TextEffect>
-            <span className="ml-3">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
+              <TextEffect 
+                per='char' 
+                preset='fade'
+                delay={1.0}
+                className="text-white"
+              >
+                You Deal
+              </TextEffect>
               <TextEffect 
                 per='char' 
                 preset='fade'
@@ -67,7 +67,7 @@ export function Loader() {
               >
                 We Deliver
               </TextEffect>
-            </span>
+            </div>
           </h1>
         </motion.div>
 

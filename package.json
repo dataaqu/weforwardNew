@@ -8,9 +8,11 @@
     "build": "npm run security-check && tsc -b && vite build",
     "build:prod": "npm run security-check && tsc -b && vite build --mode production",
     "build:netlify": "tsc -b && vite build",
+    "postinstall": "echo 'Dependencies installed successfully'",
     "security-check": "bash scripts/security-check.sh",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean": "rm -rf dist node_modules package-lock.json"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

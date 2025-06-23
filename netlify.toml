@@ -1,10 +1,13 @@
 [build]
-  command = "npm run build:netlify"
+  command = "npm ci && npm run build:netlify"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION = "20"
-  NPM_FLAGS = "--no-optional"
+  NPM_CONFIG_PREFER_OFFLINE = "true"
+  NPM_CONFIG_AUDIT = "false"
+  NPM_CONFIG_FUND = "false"
+  NPM_CONFIG_OPTIONAL = "true"
 
 [[redirects]]
   from = "/*"

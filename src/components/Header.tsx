@@ -32,6 +32,18 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Handle hash navigation after route changes
+  useEffect(() => {
+    if (location.pathname === '/' && location.hash) {
+      // Remove the # from the hash and scroll to the section
+      const sectionId = location.hash.slice(1)
+      // Add a small delay to ensure the page has loaded
+      setTimeout(() => {
+        smoothScrollToSection(sectionId)
+      }, 100)
+    }
+  }, [location.pathname, location.hash])
+
   // Dynamic header styles based on scroll
   const headerOpacity = scrollY > 100 ? 0.85 : 0.95
   const blurAmount = scrollY > 100 ? 'backdrop-blur-lg' : 'backdrop-blur-md'
@@ -80,7 +92,7 @@ export function Header() {
     } else {
       // If we're not on the home page, navigate to home first
       if (location.pathname !== '/') {
-        navigate('/')
+        navigate(`/#${item.href}`)
       } else {
         // For internal sections on home page, use enhanced scroll
         smoothScrollToSection(item.href)

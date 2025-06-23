@@ -92,6 +92,17 @@ export interface Translations {
     title: string
     subtitle: string
   }
+  
+  // Error Pages
+  errors?: {
+    pageNotFound?: {
+      title: string
+      message: string
+      goHome: string
+      goBack: string
+      helpfulLinks: string
+    }
+  }
 }
 
 export const translations: { en: Translations; ka: Translations } = {
@@ -176,6 +187,15 @@ export const translations: { en: Translations; ka: Translations } = {
     blog: {
       title: "Under Construction",
       subtitle: "We're working hard to bring you amazing content about logistics trends and industry insights. Stay tuned for updates!"
+    },
+    errors: {
+      pageNotFound: {
+        title: "Page Not Found",
+        message: "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
+        goHome: "Go Home",
+        goBack: "Go Back",
+        helpfulLinks: "You might be looking for:"
+      }
     }
   },
   ka: {
@@ -258,6 +278,15 @@ export const translations: { en: Translations; ka: Translations } = {
     blog: {
       title: "მშენებლობის პროცესში",
       subtitle: "ჩვენ ვმუშაობთ, რომ მოგაწოდოთ საინტერესო კონტენტი ლოგისტიკის ტენდენციებისა და ინდუსტრიის ინსაიტების შესახებ. დარჩით ჩვენთან განახლებებისთვის!"
+    },
+    errors: {
+      pageNotFound: {
+        title: "გვერდი ვერ მოიძებნა",
+        message: "თქვენს მიერ მოძებნული გვერდი შესაძლოა წაშლილი იყოს, შეცვლილი სახელი ჰქონდეს ან დროებით მიუწვდომელი იყოს.",
+        goHome: "მთავარ გვერდზე",
+        goBack: "უკან დაბრუნება",
+        helpfulLinks: "შესაძლოა ეძებთ:"
+      }
     }
   }
 }

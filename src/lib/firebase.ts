@@ -3,15 +3,6 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 
-// Domain validation for security - simplified for cPanel
-const validateDomain = () => {
-  // Skip domain validation for cPanel deployment
-  // You can add your domain here if needed
-  console.log('✅ Domain validation skipped for cPanel deployment');
-};
-
-// Validate domain before initializing Firebase
-validateDomain();
 
 // Firebase configuration - using direct values for cPanel deployment
 const firebaseConfig = {

@@ -8,6 +8,7 @@ import { Loader } from './components/Loader'
 import { HomePage } from './pages/HomePage'
 import { BlogPage } from './pages/BlogPage'
 import { BlogPostDetail } from './pages/BlogPostDetail'
+import { NotFoundPage } from './pages/NotFoundPage'
 import { useLoader } from './hooks/useLoader'
 
 // Lazy load admin components to reduce initial bundle size
@@ -86,6 +87,15 @@ function App() {
                   <AdminCategories />
                 </ProtectedRoute>
               </Suspense>
+            } />
+            
+            {/* 404 Not Found route - must be last */}
+            <Route path="*" element={
+              <div className="min-h-screen">
+                <Header />
+                <NotFoundPage />
+                <Footer />
+              </div>
             } />
           </Routes>
         </Router>

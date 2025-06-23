@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WEFORWARD</title>
+    <script>
+      // Prevent flash of light theme
+      (function() {
+        const theme = localStorage.getItem('weforward-ui-theme') || 'dark';
+        if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.add('light');
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-SLY3UUFQ.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/react-vendor-DJG_os-6.js">
+    <link rel="modulepreload" crossorigin href="/assets/router-vendor-CBKEtYzT.js">
+    <link rel="modulepreload" crossorigin href="/assets/ui-vendor-Ccc-FHxb.js">
+    <link rel="modulepreload" crossorigin href="/assets/firebase-vendor-DysxmUEP.js">
+    <link rel="modulepreload" crossorigin href="/assets/admin-C5rb7U-8.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-CD2sUqCN.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

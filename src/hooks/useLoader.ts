@@ -16,8 +16,11 @@ import warehouseServiceImg from '../assets/warehouse service.webp'
 import brokageServiceImg from '../assets/brockage service.webp'
 
 export function useLoader(minLoadTime: number = 3000) {
-  const [isLoading, setIsLoading] = useState(true)
-  const [imagesLoaded, setImagesLoaded] = useState(false)
+  // Check if loader has been shown in this session
+  const hasShownLoader = sessionStorage.getItem('weforward-loader-shown') === 'true'
+  
+  const [isLoading, setIsLoading] = useState(!hasShownLoader)
+  const [imagesLoaded, setImagesLoaded] = useState(hasShownLoader)
 
   // Critical images that need to be preloaded
   const criticalImages = [
@@ -35,6 +38,11 @@ export function useLoader(minLoadTime: number = 3000) {
   ]
 
   useEffect(() => {
+    // If loader has already been shown in this session, skip it
+    if (hasShownLoader) {
+      return
+    }
+
     const preloadImages = () => {
       const imagePromises = criticalImages.map((src) => {
         return new Promise<void>((resolve) => {
@@ -58,17 +66,21 @@ export function useLoader(minLoadTime: number = 3000) {
         
         setImagesLoaded(true)
         setIsLoading(false)
+        
+        // Mark loader as shown for this session
+        sessionStorage.setItem('weforward-loader-shown', 'true')
       } catch (error) {
         // Continue even if some assets fail to load
         setTimeout(() => {
           setImagesLoaded(true)
           setIsLoading(false)
+          sessionStorage.setItem('weforward-loader-shown', 'true')
         }, minLoadTime)
       }
     }
 
     loadApp()
-  }, [minLoadTime, criticalImages])
+  }, [minLoadTime, criticalImages, hasShownLoader])
 
   return { 
     isLoading, 

@@ -3,54 +3,28 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 
-// Domain validation for security
+// Domain validation for security - simplified for cPanel
 const validateDomain = () => {
-  const allowedDomains = import.meta.env.VITE_ALLOWED_DOMAINS?.split(',') || [];
-  const currentDomain = window.location.hostname;
-  
-  if (import.meta.env.VITE_ENVIRONMENT === 'production') {
-    const isAllowed = allowedDomains.some((domain: string) => {
-      if (domain.startsWith('*.')) {
-        const baseDomain = domain.slice(2);
-        return currentDomain.endsWith(baseDomain);
-      }
-      return currentDomain === domain;
-    });
-    
-    if (!isAllowed) {
-      throw new Error('Unauthorized domain access');
-    }
-  }
+  // Skip domain validation for cPanel deployment
+  // You can add your domain here if needed
+  console.log('✅ Domain validation skipped for cPanel deployment');
 };
 
 // Validate domain before initializing Firebase
 validateDomain();
 
-// Firebase configuration using environment variables
+// Firebase configuration - using direct values for cPanel deployment
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID
+  apiKey: "AIzaSyAKAW0nAicwoObIaFJ4RrUbsunmmqLzq9U",
+  authDomain: "weforward-blogpage.firebaseapp.com",
+  projectId: "weforward-blogpage",
+  storageBucket: "weforward-blogpage.firebasestorage.app",
+  messagingSenderId: "429074555361",
+  appId: "1:429074555361:web:e4c8f52a5d7acc05aeb2a0"
 };
 
-// Validate that all required environment variables are present
-const requiredEnvVars = [
-  'VITE_FIREBASE_API_KEY',
-  'VITE_FIREBASE_AUTH_DOMAIN', 
-  'VITE_FIREBASE_PROJECT_ID',
-  'VITE_FIREBASE_STORAGE_BUCKET',
-  'VITE_FIREBASE_MESSAGING_SENDER_ID',
-  'VITE_FIREBASE_APP_ID'
-];
-
-for (const envVar of requiredEnvVars) {
-  if (!import.meta.env[envVar]) {
-    throw new Error(`Missing required environment variable: ${envVar}`);
-  }
-}
+// Skip environment variable validation for cPanel deployment
+// Configuration is now hardcoded above
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

@@ -90,9 +90,13 @@ export function Header() {
       // Navigate to external page using React Router
       navigate(item.href)
     } else {
-      // If we're not on the home page, navigate to home first
+      // If we're not on the home page, navigate to home first, then scroll
       if (location.pathname !== '/') {
-        navigate(`/#${item.href}`)
+        navigate('/')
+        // Use a small delay to ensure the page has loaded before scrolling
+        setTimeout(() => {
+          smoothScrollToSection(item.href)
+        }, 100)
       } else {
         // For internal sections on home page, use enhanced scroll
         smoothScrollToSection(item.href)

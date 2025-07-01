@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion'
-import { SEO } from '../lib/seo'
+import { SEO, StructuredData, generateStructuredData } from '../lib/seo'
 import { useTheme } from '../components/theme-provider'
 import { useTranslation } from '../components/translation-provider'
 import { blogService } from '../services/blogService';
@@ -40,15 +40,47 @@ export function BlogPage() {
     fetchPosts();
   }, [])
 
+  // Create structured data for blog listing
+  const blogStructuredData = posts.length > 0 ? generateStructuredData.blog(
+    posts.slice(0, 10).map(post => ({
+      title: language === 'en' ? post.title : post.titleKa,
+      url: `https://weforward.ge/blog/${post.slug}`,
+      publishDate: post.publishedAt?.toISOString() || post.createdAt.toISOString(),
+      author: (language === 'en' ? post.author : post.authorKa) || 'WeForward Team',
+      image: post.featuredImage?.startsWith('http') 
+        ? post.featuredImage 
+        : `https://weforward.ge${post.featuredImage}`,
+      description: (language === 'en' ? post.metaDescription : post.metaDescriptionKa) || 
+                  (language === 'en' ? post.excerpt : post.excerptKa)
+    }))
+  ) : null;
+
+  // Create dynamic meta description based on posts
+  const metaDescription = posts.length > 0 
+    ? `Latest blog posts from WeForward - insights on logistics, technology, and industry trends. Read articles about ${posts.slice(0, 3).map(p => language === 'en' ? p.title : p.titleKa).join(', ')}.`
+    : "Our blog is coming soon! Stay tuned for articles about logistics, technology trends, and industry insights.";
+
+  // Create Open Graph image - use the first post's featured image or default
+  const ogImage = posts.length > 0 && posts[0].featuredImage
+    ? (posts[0].featuredImage.startsWith('http') 
+        ? posts[0].featuredImage 
+        : `https://weforward.ge${posts[0].featuredImage}`)
+    : 'https://weforward.ge/favicon.png';
+
   return (
     <>
-      {/* SEO for Blog Page */}
+      {/* Enhanced SEO for Blog Page */}
       <SEO 
-        title="Blog - WeForward"
-        description={posts.length > 0 ? "Latest blog posts from WeForward - insights on logistics, technology, and industry trends." : "Our blog is coming soon! Stay tuned for articles about logistics, technology trends, and industry insights."}
-        keywords="blog, logistics, freight, shipping, technology, WeForward"
+        title={`${language === 'en' ? 'Blog' : 'ბლოგი'} - WeForward`}
+        description={metaDescription}
+        keywords="blog, logistics, freight, shipping, technology, WeForward, cargo transport, supply chain, industry insights"
+        ogImage={ogImage}
         canonicalUrl="https://weforward.ge/blog"
+        ogType="website"
       />
+      
+      {/* Structured Data for Blog Listing */}
+      {blogStructuredData && <StructuredData data={blogStructuredData} />}
       
       <main className="relative">
         <section id="blog" className={`relative min-h-screen py-20 ${

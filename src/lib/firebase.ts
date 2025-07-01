@@ -3,19 +3,31 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 
-
-// Firebase configuration - using direct values for cPanel deployment
+// Firebase configuration using environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyAKAW0nAicwoObIaFJ4RrUbsunmmqLzq9U",
-  authDomain: "weforward-blogpage.firebaseapp.com",
-  projectId: "weforward-blogpage",
-  storageBucket: "weforward-blogpage.firebasestorage.app",
-  messagingSenderId: "429074555361",
-  appId: "1:429074555361:web:e4c8f52a5d7acc05aeb2a0"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-// Skip environment variable validation for cPanel deployment
-// Configuration is now hardcoded above
+// Validate that all required environment variables are present
+const requiredEnvVars = [
+  'VITE_FIREBASE_API_KEY',
+  'VITE_FIREBASE_AUTH_DOMAIN',
+  'VITE_FIREBASE_PROJECT_ID',
+  'VITE_FIREBASE_STORAGE_BUCKET',
+  'VITE_FIREBASE_MESSAGING_SENDER_ID',
+  'VITE_FIREBASE_APP_ID'
+];
+
+const missingEnvVars = requiredEnvVars.filter(envVar => !import.meta.env[envVar]);
+
+if (missingEnvVars.length > 0) {
+  throw new Error(`Missing required environment variables: ${missingEnvVars.join(', ')}`);
+}
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

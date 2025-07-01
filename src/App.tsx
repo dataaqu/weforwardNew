@@ -16,6 +16,7 @@ const AdminLogin = lazy(() => import('./pages/admin/AdminLogin').then(module => 
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard').then(module => ({ default: module.AdminDashboard })))
 const AdminPosts = lazy(() => import('./pages/admin/AdminPosts').then(module => ({ default: module.AdminPosts })))
 const AdminNewPost = lazy(() => import('./pages/admin/AdminNewPost').then(module => ({ default: module.AdminNewPost })))
+const AdminEditPost = lazy(() => import('./pages/admin/AdminEditPost').then(module => ({ default: module.AdminEditPost })))
 const AdminCategories = lazy(() => import('./pages/admin/AdminCategories').then(module => ({ default: module.AdminCategories })))
 const ProtectedRoute = lazy(() => import('./components/admin/ProtectedRoute').then(module => ({ default: module.ProtectedRoute })))
 
@@ -78,6 +79,13 @@ function App() {
               <Suspense fallback={<Loader />}>
                 <ProtectedRoute>
                   <AdminNewPost />
+                </ProtectedRoute>
+              </Suspense>
+            } />
+            <Route path="/admin/posts/edit/:id" element={
+              <Suspense fallback={<Loader />}>
+                <ProtectedRoute>
+                  <AdminEditPost />
                 </ProtectedRoute>
               </Suspense>
             } />

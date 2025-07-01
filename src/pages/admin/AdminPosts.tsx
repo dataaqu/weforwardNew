@@ -224,6 +224,13 @@ export const AdminPosts: React.FC = () => {
                       </Link>
                     )}
                     
+                    <Link
+                      to={`/admin/posts/edit/${post.id}`}
+                      className="inline-flex items-center px-3 py-1 text-sm text-green-600 hover:bg-green-50 rounded transition-colors duration-200"
+                    >
+                      Edit
+                    </Link>
+                    
                     <button
                       onClick={() => handleDelete(post.id)}
                       className="inline-flex items-center px-3 py-1 text-sm text-red-600 hover:bg-red-50 rounded transition-colors duration-200"

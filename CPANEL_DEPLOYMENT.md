@@ -1,33 +1,44 @@
-# 🚀 WeForward cPanel Deployment Guide
+# 🚀 cPanel Deployment Guide
 
-## ✅ **YES, You Can Deploy to cPanel!**
+## Quick Deployment Steps
 
-Your WeForward project has been prepared for cPanel deployment with hardcoded Firebase configuration.
+1. **Build the project:**
+   ```bash
+   npm run build
+   ```
 
-### 📦 **What You Need to Upload:**
+2. **Upload files:**
+   - Upload ALL contents of the `dist/` folder to your cPanel's `public_html` directory
 
-Upload ALL contents of the `dist/` folder to your cPanel's `public_html` directory (or subdirectory).
+3. **File structure:**
+   ```
+   public_html/
+   ├── index.html
+   ├── .htaccess
+   ├── assets/
+   └── favicon.png
+   ```
 
-### 📂 **Files Structure After Upload:**
+## Environment Variables
+
+Add these environment variables in your cPanel hosting environment:
+
 ```
-public_html/
-├── index.html
-├── .htaccess (for proper routing)
-├── assets/
-│   ├── *.css files
-│   ├── *.js files  
-│   └── *.webp, *.png images
+VITE_FIREBASE_API_KEY=AIzaSyAKAW0nAicwoObIaFJ4RrUbsunmmqLzq9U
+VITE_FIREBASE_AUTH_DOMAIN=weforward-blogpage.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=weforward-blogpage
+VITE_FIREBASE_STORAGE_BUCKET=weforward-blogpage.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=429074555361
+VITE_FIREBASE_APP_ID=1:429074555361:web:e4c8f52a5d7acc05aeb2a0
+VITE_EMAILJS_SERVICE_ID=service_v7gthax
+VITE_EMAILJS_TEMPLATE_ID=template_2qrj0l3
+VITE_EMAILJS_PUBLIC_KEY=mSf2de92nJaxPCsRw
 ```
 
-### 🔧 **Step-by-Step Instructions:**
+## Notes
 
-#### **1. Access cPanel File Manager**
-- Login to your cPanel
-- Open "File Manager"
-- Navigate to `public_html` (or your domain's folder)
-
-#### **2. Upload Built Files**
-- Upload ALL files from your local `dist/` folder
+- Ensure `.htaccess` is uploaded for proper routing
+- Contact your hosting provider if environment variables aren't supported
 - Make sure to upload the `.htaccess` file (enable "Show Hidden Files" if needed)
 - The structure should match the folder structure above
 

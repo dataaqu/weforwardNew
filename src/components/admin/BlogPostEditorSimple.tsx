@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import type { BlogPost, CreateBlogPostData } from '../../types/blog';
 import { blogService } from '../../services/blogService';
+import { SEOAuditService, type SEOAuditResult } from '../../services/seoAuditService';
+import { SEOAuditPanel } from './SEOAuditPanel';
+import { BlogPreview } from './BlogPreview';
 
 interface BlogPostEditorProps {
   post?: BlogPost;
@@ -38,8 +41,14 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
     readTime: 0
   });
 
+  const [selectedH1En, setSelectedH1En] = useState<string>('');
+  const [selectedH1Ka, setSelectedH1Ka] = useState<string>('');
+
   const [seoTags, setSeoTags] = useState<string>('');
   const [seoTagsKa, setSeoTagsKa] = useState<string>('');
+  const [seoAuditResult, setSeoAuditResult] = useState<SEOAuditResult | null>(null);
+  const [showSeoAudit, setShowSeoAudit] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
   const [images, setImages] = useState<Array<{
     file: File | null;
@@ -87,8 +96,53 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
     }
   }, [post]);
 
+  const runSEOAudit = () => {
+    const auditData = {
+      title: formData.title,
+      titleKa: formData.titleKa,
+      content: formData.content,
+      contentKa: formData.contentKa,
+      excerpt: formData.excerpt,
+      excerptKa: formData.excerptKa,
+      metaDescription: formData.metaDescription,
+      metaDescriptionKa: formData.metaDescriptionKa,
+      seoTags,
+      seoTagsKa,
+      featuredImageUrl: formData.featuredImage || (images.find(img => img.isMain)?.url || ''),
+      images: images.filter(img => img.file).map(img => img.file!).filter(Boolean),
+      selectedH1En,
+      selectedH1Ka
+    };
+
+    const result = SEOAuditService.auditBlogPost(auditData);
+    setSeoAuditResult(result);
+    setShowSeoAudit(true);
+    return result;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Run SEO audit first
+    const auditResult = runSEOAudit();
+    
+    // If the SEO score is poor and it's being published, show audit panel and block
+    if (formData.published && auditResult.score < 50) {
+      return; // SEO audit panel will be shown, user must fix issues
+    }
+    
+    // If score is between 50-75, show audit but allow publishing
+    if (formData.published && auditResult.score < 75) {
+      // Audit panel will show with option to proceed
+      return;
+    }
+    
+    // Good score (75+) or draft - proceed directly
+    await processSave();
+  };
+
+  const processSave = async () => {
+    setShowSeoAudit(false);
     
     console.log('🚀 Starting blog post submission...');
     console.log('📝 Form data:', formData);
@@ -305,27 +359,37 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
           cursorOffset = tag.length;
           break;
         case 'h1':
+          const h1Text = isGeorgian ? selectedH1Ka : selectedH1En;
+          tag = `<h1 style="font-size: 2.5rem; font-weight: bold; color: #1f2937; margin: 1.5rem 0; line-height: 1.2;">${h1Text || 'Main Heading'}</h1>`;
+          cursorOffset = tag.indexOf('>') + 1;
+          break;
         case 'h2':
+          tag = '<h2 style="font-size: 2rem; font-weight: bold; color: #374151; margin: 1.25rem 0; line-height: 1.3;">Section Heading</h2>';
+          cursorOffset = tag.indexOf('>') + 1;
+          break;
         case 'h3':
+          tag = '<h3 style="font-size: 1.5rem; font-weight: semibold; color: #4b5563; margin: 1rem 0; line-height: 1.4;">Subsection Heading</h3>';
+          cursorOffset = tag.indexOf('>') + 1;
+          break;
         case 'h4':
-          tag = `<${tagName}>Heading</${tagName}>`;
-          cursorOffset = `<${tagName}>`.length;
+          tag = '<h4 style="font-size: 1.25rem; font-weight: medium; color: #6b7280; margin: 0.75rem 0; line-height: 1.5;">Subsection Heading</h4>';
+          cursorOffset = tag.indexOf('>') + 1;
           break;
         case 'a':
-          tag = '<a href="https://example.com">Link Text</a>';
+          tag = '<a href="https://example.com" style="color: #309f69; text-decoration: underline;">Link Text</a>';
           cursorOffset = '<a href="'.length;
           break;
         case 'strong':
-          tag = '<strong>Bold Text</strong>';
-          cursorOffset = '<strong>'.length;
+          tag = '<strong style="font-weight: bold;">Bold Text</strong>';
+          cursorOffset = tag.indexOf('>') + 1;
           break;
         case 'em':
-          tag = '<em>Italic Text</em>';
-          cursorOffset = '<em>'.length;
+          tag = '<em style="font-style: italic;">Italic Text</em>';
+          cursorOffset = tag.indexOf('>') + 1;
           break;
         case 'p':
-          tag = '<p>Paragraph text</p>';
-          cursorOffset = '<p>'.length;
+          tag = '<p style="margin: 1rem 0; line-height: 1.6;">Paragraph text</p>';
+          cursorOffset = tag.indexOf('>') + 1;
           break;
         default:
           tag = `<${tagName}></${tagName}>`;
@@ -345,8 +409,13 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
         textarea.focus();
         if (tagName === 'br') {
           textarea.setSelectionRange(start + cursorOffset, start + cursorOffset);
-        } else {
+        } else if (['h1', 'h2', 'h3', 'h4', 'p', 'strong', 'em'].includes(tagName)) {
           // Select the content inside the tag for easy replacement
+          const textStart = start + cursorOffset;
+          const textEnd = start + tag.lastIndexOf('<');
+          textarea.setSelectionRange(textStart, textEnd);
+        } else {
+          // For links and other tags
           const contentStart = start + cursorOffset;
           const contentEnd = start + tag.length - `</${tagName}>`.length;
           textarea.setSelectionRange(contentStart, contentEnd);
@@ -403,7 +472,32 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
 
       {/* SEO Section */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">SEO Settings</h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-gray-900">SEO Settings</h2>
+          {seoAuditResult && (
+            <div className="flex items-center gap-3">
+              <div className={`px-3 py-1 rounded-full text-sm font-medium ${
+                seoAuditResult.score >= 90 ? 'bg-green-100 text-green-800' :
+                seoAuditResult.score >= 75 ? 'bg-blue-100 text-blue-800' :
+                seoAuditResult.score >= 50 ? 'bg-yellow-100 text-yellow-800' :
+                'bg-red-100 text-red-800'
+              }`}>
+                SEO Score: {seoAuditResult.score}/100
+              </div>
+              <span className={`text-sm ${
+                seoAuditResult.score >= 90 ? 'text-green-600' :
+                seoAuditResult.score >= 75 ? 'text-blue-600' :
+                seoAuditResult.score >= 50 ? 'text-yellow-600' :
+                'text-red-600'
+              }`}>
+                {seoAuditResult.status === 'excellent' ? '🏆 Excellent' :
+                 seoAuditResult.status === 'good' ? '✅ Good' :
+                 seoAuditResult.status === 'needs-improvement' ? '⚠️ Needs Work' :
+                 '❌ Poor'}
+              </span>
+            </div>
+          )}
+        </div>
         
         <div className="space-y-6">
           {/* Meta Descriptions */}
@@ -443,37 +537,82 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
             </div>
           </div>
 
-          {/* SEO Keywords/Tags */}
+          {/* SEO Keywords/Tags - Limited to 4 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                SEO Keywords/Tags (English)
+                SEO Keywords/Tags (English) - Max 4
               </label>
               <input
                 type="text"
                 value={seoTags}
-                onChange={(e) => setSeoTags(e.target.value)}
+                onChange={(e) => {
+                  const keywords = e.target.value.split(',').map(k => k.trim()).filter(k => k.length > 0);
+                  if (keywords.length <= 4) {
+                    setSeoTags(e.target.value);
+                  }
+                }}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#309f69] focus:border-[#309f69] transition-colors duration-200"
-                placeholder="keyword1, keyword2, keyword3"
+                placeholder="keyword1, keyword2, keyword3, keyword4"
               />
               <p className="text-xs text-gray-500 mt-1">
-                Separate keywords with commas. Used for SEO and content categorization.
+                {seoTags.split(',').filter(k => k.trim().length > 0).length}/4 keywords. Separate with commas.
               </p>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                SEO Keywords/Tags (Georgian)
+                SEO Keywords/Tags (Georgian) - Max 4
               </label>
               <input
                 type="text"
                 value={seoTagsKa}
-                onChange={(e) => setSeoTagsKa(e.target.value)}
+                onChange={(e) => {
+                  const keywords = e.target.value.split(',').map(k => k.trim()).filter(k => k.length > 0);
+                  if (keywords.length <= 4) {
+                    setSeoTagsKa(e.target.value);
+                  }
+                }}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#309f69] focus:border-[#309f69] transition-colors duration-200"
-                placeholder="საკვანძო1, საკვანძო2, საკვანძო3"
+                placeholder="საკვანძო1, საკვანძო2, საკვანძო3, საკვანძო4"
               />
               <p className="text-xs text-gray-500 mt-1">
-                გამოყავით საკვანძო სიტყვები მძიმით. გამოიყენება SEO-სთვის და კონტენტის კატეგორიზაციისთვის.
+                {seoTagsKa.split(',').filter(k => k.trim().length > 0).length}/4 keywords. გამოყავით მძიმით.
+              </p>
+            </div>
+          </div>
+
+          {/* H1 Selection */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                H1 Heading (English)
+              </label>
+              <input
+                type="text"
+                value={selectedH1En}
+                onChange={(e) => setSelectedH1En(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#309f69] focus:border-[#309f69] transition-colors duration-200"
+                placeholder="Main heading for the blog post"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                This will be the main H1 heading in your content. Important for SEO.
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                H1 Heading (Georgian)
+              </label>
+              <input
+                type="text"
+                value={selectedH1Ka}
+                onChange={(e) => setSelectedH1Ka(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#309f69] focus:border-[#309f69] transition-colors duration-200"
+                placeholder="ბლოგ პოსტის მთავარი სათაური"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                ეს იქნება თქვენი კონტენტის მთავარი H1 სათაური. მნიშვნელოვანია SEO-სთვის.
               </p>
             </div>
           </div>
@@ -585,17 +724,72 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
             </div>
           </div>
 
-          {/* SEO Tips */}
-          <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-            <h3 className="text-sm font-semibold text-blue-900 mb-2">🎯 SEO Best Practices</h3>
-            <ul className="text-xs text-blue-700 space-y-1">
-              <li>• Keep meta descriptions between 150-160 characters</li>
-              <li>• Use relevant keywords naturally in title and content</li>
-              <li>• Create descriptive, keyword-rich URL slugs</li>
-              <li>• Write compelling excerpts that encourage clicks</li>
-              <li>• Use heading tags (H1, H2, H3) to structure content</li>
-              <li>• Include keywords in your tags for better categorization</li>
-            </ul>
+          {/* SEO Tips and Live Status */}
+          <div className="grid lg:grid-cols-2 gap-4">
+            {/* SEO Tips */}
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+              <h3 className="text-sm font-semibold text-blue-900 mb-2">🎯 SEO Best Practices</h3>
+              <ul className="text-xs text-blue-700 space-y-1">
+                <li>• Keep meta descriptions between 150-160 characters</li>
+                <li>• Use relevant keywords naturally in title and content</li>
+                <li>• Create descriptive, keyword-rich URL slugs</li>
+                <li>• Write compelling excerpts that encourage clicks</li>
+                <li>• Use heading tags (H1, H2, H3) to structure content</li>
+                <li>• Include keywords in your tags for better categorization</li>
+              </ul>
+            </div>
+
+            {/* Live SEO Status */}
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <h3 className="text-sm font-semibold text-gray-900 mb-3">📊 Quick SEO Status</h3>
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between">
+                  <span>Title Length (EN):</span>
+                  <span className={formData.title.length >= 30 && formData.title.length <= 60 ? 'text-green-600' : 'text-red-600'}>
+                    {formData.title.length}/60
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Title Length (KA):</span>
+                  <span className={formData.titleKa.length >= 20 && formData.titleKa.length <= 50 ? 'text-green-600' : 'text-red-600'}>
+                    {formData.titleKa.length}/50
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Meta Desc (EN):</span>
+                  <span className={formData.metaDescription.length >= 120 && formData.metaDescription.length <= 160 ? 'text-green-600' : 'text-red-600'}>
+                    {formData.metaDescription.length}/160
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Meta Desc (KA):</span>
+                  <span className={formData.metaDescriptionKa.length >= 100 && formData.metaDescriptionKa.length <= 140 ? 'text-green-600' : 'text-red-600'}>
+                    {formData.metaDescriptionKa.length}/140
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Content Words (EN):</span>
+                  <span className={formData.content.replace(/<[^>]*>/g, '').split(/\s+/).filter(w => w.length > 0).length >= 300 ? 'text-green-600' : 'text-yellow-600'}>
+                    {formData.content.replace(/<[^>]*>/g, '').split(/\s+/).filter(w => w.length > 0).length}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Keywords:</span>
+                  <span className={seoTags.split(',').filter(t => t.trim().length > 0).length >= 3 ? 'text-green-600' : 'text-yellow-600'}>
+                    {seoTags.split(',').filter(t => t.trim().length > 0).length}
+                  </span>
+                </div>
+                <div className="pt-2 border-t border-gray-300">
+                  <button
+                    type="button"
+                    onClick={() => runSEOAudit()}
+                    className="w-full text-xs bg-blue-500 text-white py-2 px-3 rounded hover:bg-blue-600 transition-colors"
+                  >
+                    🔍 Run Full SEO Audit
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -642,36 +836,41 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
         
         {/* HTML Tags Helper */}
         <div className="mb-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
-          <h3 className="text-sm font-semibold text-amber-900 mb-3">🏷️ HTML Tags Support</h3>
+          <h3 className="text-sm font-semibold text-amber-900 mb-3">🏷️ HTML Tags Support with Enhanced Styling</h3>
           <p className="text-xs text-amber-700 mb-3">
-            You can use HTML tags directly in your content. They will be rendered properly in the blog post.
+            HTML tags are automatically styled with improved typography and spacing. H1-H4 headings are large and visually distinct.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             <div className="bg-white p-2 rounded border">
-              <div className="text-xs font-medium text-amber-800 mb-1">Headings:</div>
+              <div className="text-xs font-medium text-amber-800 mb-1">Headings (Auto-styled):</div>
               <div className="space-y-1">
-                <code className="text-xs bg-amber-100 px-1 py-0.5 rounded text-amber-800 block">&lt;h1&gt;Title&lt;/h1&gt;</code>
-                <code className="text-xs bg-amber-100 px-1 py-0.5 rounded text-amber-800 block">&lt;h2&gt;Subtitle&lt;/h2&gt;</code>
-                <code className="text-xs bg-amber-100 px-1 py-0.5 rounded text-amber-800 block">&lt;h3&gt;Section&lt;/h3&gt;</code>
-                <code className="text-xs bg-amber-100 px-1 py-0.5 rounded text-amber-800 block">&lt;h4&gt;Subsection&lt;/h4&gt;</code>
+                <code className="text-xs bg-red-100 px-1 py-0.5 rounded text-red-800 block font-bold">&lt;h1&gt;Main Title (2.5rem)&lt;/h1&gt;</code>
+                <code className="text-xs bg-purple-100 px-1 py-0.5 rounded text-purple-800 block">&lt;h2&gt;Section (2rem)&lt;/h2&gt;</code>
+                <code className="text-xs bg-purple-100 px-1 py-0.5 rounded text-purple-800 block">&lt;h3&gt;Subsection (1.5rem)&lt;/h3&gt;</code>
+                <code className="text-xs bg-purple-100 px-1 py-0.5 rounded text-purple-800 block">&lt;h4&gt;Small heading (1.25rem)&lt;/h4&gt;</code>
               </div>
             </div>
             <div className="bg-white p-2 rounded border">
               <div className="text-xs font-medium text-amber-800 mb-1">Links & Breaks:</div>
               <div className="space-y-1">
-                <code className="text-xs bg-amber-100 px-1 py-0.5 rounded text-amber-800 block">&lt;a href="url"&gt;Link&lt;/a&gt;</code>
-                <code className="text-xs bg-amber-100 px-1 py-0.5 rounded text-amber-800 block">&lt;br&gt;</code>
-                <code className="text-xs bg-amber-100 px-1 py-0.5 rounded text-amber-800 block">&lt;br/&gt;</code>
+                <code className="text-xs bg-teal-100 px-1 py-0.5 rounded text-teal-800 block">&lt;a href="url"&gt;Link&lt;/a&gt;</code>
+                <code className="text-xs bg-orange-100 px-1 py-0.5 rounded text-orange-800 block">&lt;br&gt;</code>
+                <code className="text-xs bg-orange-100 px-1 py-0.5 rounded text-orange-800 block">&lt;br/&gt;</code>
               </div>
             </div>
             <div className="bg-white p-2 rounded border">
-              <div className="text-xs font-medium text-amber-800 mb-1">Formatting:</div>
+              <div className="text-xs font-medium text-amber-800 mb-1">Text Formatting:</div>
               <div className="space-y-1">
-                <code className="text-xs bg-amber-100 px-1 py-0.5 rounded text-amber-800 block">&lt;strong&gt;Bold&lt;/strong&gt;</code>
-                <code className="text-xs bg-amber-100 px-1 py-0.5 rounded text-amber-800 block">&lt;em&gt;Italic&lt;/em&gt;</code>
-                <code className="text-xs bg-amber-100 px-1 py-0.5 rounded text-amber-800 block">&lt;p&gt;Paragraph&lt;/p&gt;</code>
+                <code className="text-xs bg-gray-100 px-1 py-0.5 rounded text-gray-800 block">&lt;strong&gt;Bold&lt;/strong&gt;</code>
+                <code className="text-xs bg-gray-100 px-1 py-0.5 rounded text-gray-800 block">&lt;em&gt;Italic&lt;/em&gt;</code>
+                <code className="text-xs bg-gray-100 px-1 py-0.5 rounded text-gray-800 block">&lt;p&gt;Paragraph&lt;/p&gt;</code>
               </div>
             </div>
+          </div>
+          <div className="mt-3 p-2 bg-blue-50 rounded">
+            <p className="text-xs text-blue-700">
+              <strong>💡 Tip:</strong> H1 buttons use your selected H1 text from SEO section. Headings are automatically styled with larger fonts, proper spacing, and visual hierarchy.
+            </p>
           </div>
         </div>
         
@@ -711,6 +910,14 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
                 <span className="text-xs text-gray-500 mr-2">HTML:</span>
                 <button
                   type="button"
+                  onClick={() => insertHtmlTag('h1', false)}
+                  className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition-colors font-bold"
+                  title="Insert H1 main heading"
+                >
+                  H1
+                </button>
+                <button
+                  type="button"
                   onClick={() => insertHtmlTag('h2', false)}
                   className="text-xs bg-purple-500 text-white px-2 py-1 rounded hover:bg-purple-600 transition-colors"
                   title="Insert H2 heading"
@@ -727,6 +934,14 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
                 </button>
                 <button
                   type="button"
+                  onClick={() => insertHtmlTag('h4', false)}
+                  className="text-xs bg-purple-400 text-white px-2 py-1 rounded hover:bg-purple-500 transition-colors"
+                  title="Insert H4 heading"
+                >
+                  H4
+                </button>
+                <button
+                  type="button"
                   onClick={() => insertHtmlTag('br', false)}
                   className="text-xs bg-orange-500 text-white px-2 py-1 rounded hover:bg-orange-600 transition-colors"
                   title="Insert line break"
@@ -740,6 +955,14 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
                   title="Insert link"
                 >
                   LINK
+                </button>
+                <button
+                  type="button"
+                  onClick={() => insertHtmlTag('strong', false)}
+                  className="text-xs bg-gray-700 text-white px-2 py-1 rounded hover:bg-gray-800 transition-colors"
+                  title="Insert bold text"
+                >
+                  BOLD
                 </button>
               </div>
             </div>
@@ -789,6 +1012,14 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
                 <span className="text-xs text-gray-500 mr-2">HTML:</span>
                 <button
                   type="button"
+                  onClick={() => insertHtmlTag('h1', true)}
+                  className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition-colors font-bold"
+                  title="Insert H1 main heading"
+                >
+                  H1
+                </button>
+                <button
+                  type="button"
                   onClick={() => insertHtmlTag('h2', true)}
                   className="text-xs bg-purple-500 text-white px-2 py-1 rounded hover:bg-purple-600 transition-colors"
                   title="Insert H2 heading"
@@ -802,6 +1033,14 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
                   title="Insert H3 heading"
                 >
                   H3
+                </button>
+                <button
+                  type="button"
+                  onClick={() => insertHtmlTag('h4', true)}
+                  className="text-xs bg-purple-400 text-white px-2 py-1 rounded hover:bg-purple-500 transition-colors"
+                  title="Insert H4 heading"
+                >
+                  H4
                 </button>
                 <button
                   type="button"
@@ -819,6 +1058,14 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
                 >
                   LINK
                 </button>
+                <button
+                  type="button"
+                  onClick={() => insertHtmlTag('strong', true)}
+                  className="text-xs bg-gray-700 text-white px-2 py-1 rounded hover:bg-gray-800 transition-colors"
+                  title="Insert bold text"
+                >
+                  BOLD
+                </button>
               </div>
             </div>
           </div>
@@ -832,9 +1079,69 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
         </div>
       </div>
 
-      {/* Image Upload - Multiple Images */}
+      {/* Featured Image Selection */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Blog Images (Max 4)</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Featured Image</h2>
+        <div className="mb-4 p-3 bg-blue-50 rounded-lg">
+          <h3 className="text-sm font-semibold text-blue-700 mb-2">🖼️ Featured Image:</h3>
+          <ul className="text-xs text-blue-600 space-y-1">
+            <li>• The featured image appears in blog listings and social media previews</li>
+            <li>• Important for SEO and social sharing</li>
+            <li>• Will be automatically set from the main image, or upload separately</li>
+            <li>• Recommended size: 1200x630 pixels for best social media display</li>
+          </ul>
+        </div>
+        
+        {/* Featured Image Preview */}
+        {(formData.featuredImage || images.find(img => img.isMain)) && (
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Current Featured Image:</label>
+            <div className="relative inline-block">
+              <img
+                src={formData.featuredImage || images.find(img => img.isMain)?.preview || ''}
+                alt="Featured image preview"
+                className="w-64 h-32 object-cover rounded-lg border-2 border-[#309f69]"
+              />
+              <div className="absolute top-2 left-2">
+                <span className="bg-[#309f69] text-white text-xs px-2 py-1 rounded-full font-medium">
+                  Featured
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Manual Featured Image Upload */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Upload Separate Featured Image (Optional)
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                try {
+                  const url = await blogService.uploadImage(file, `featured-images/${Date.now()}-${file.name}`);
+                  setFormData(prev => ({ ...prev, featuredImage: url }));
+                } catch (error) {
+                  console.error('Failed to upload featured image:', error);
+                  alert('Failed to upload featured image. Please try again.');
+                }
+              }
+            }}
+            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
+          />
+          <p className="text-sm text-gray-500 mt-2">
+            Upload a separate featured image, or the main image from content images will be used automatically.
+          </p>
+        </div>
+      </div>
+
+      {/* Blog Content Images (Max 4) */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Content Images (Max 4)</h2>
         <div className="mb-4 p-3 bg-gray-50 rounded-lg">
           <h3 className="text-sm font-semibold text-gray-700 mb-2">📋 How to use images:</h3>
           <ul className="text-xs text-gray-600 space-y-1">
@@ -946,6 +1253,34 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
 
       {/* Submit Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 pt-6">
+        {/* SEO Audit Button */}
+        <motion.button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            runSEOAudit();
+          }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="flex-1 sm:flex-none px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium hover:shadow-lg transition-shadow duration-200 flex items-center justify-center gap-2"
+        >
+          🔍 SEO Audit
+        </motion.button>
+
+        {/* Preview Button */}
+        <motion.button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            setShowPreview(true);
+          }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="flex-1 sm:flex-none px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg transition-shadow duration-200 flex items-center justify-center gap-2"
+        >
+          👁️ {post ? 'Preview Changes' : 'Preview Blog'}
+        </motion.button>
+
         <motion.button
           type="submit"
           disabled={loading || uploadingImages}
@@ -966,6 +1301,29 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
           Cancel
         </motion.button>
       </div>
+
+      {/* SEO Audit Panel */}
+      <SEOAuditPanel 
+        auditResult={seoAuditResult}
+        isVisible={showSeoAudit}
+        onClose={() => setShowSeoAudit(false)}
+        onProceedToPublish={() => {
+          setShowSeoAudit(false);
+          processSave();
+        }}
+      />
+
+      {/* Blog Preview */}
+      <BlogPreview
+        isVisible={showPreview}
+        onClose={() => setShowPreview(false)}
+        blogData={formData}
+        seoTags={seoTags}
+        seoTagsKa={seoTagsKa}
+        selectedH1En={selectedH1En}
+        selectedH1Ka={selectedH1Ka}
+        featuredImageUrl={formData.featuredImage || images.find(img => img.isMain)?.preview || ''}
+      />
     </form>
   );
 

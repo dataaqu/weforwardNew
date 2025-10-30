@@ -5,10 +5,10 @@ import { useTranslation } from './translation-provider'
 import GlowingCard from './ui/glowing-card'
 
 // Import membership logos
-import logo1 from '../assets/memberships/1.png'
-import logo2 from '../assets/memberships/2.png'
-import logo3 from '../assets/memberships/3.png'
-import logo4 from '../assets/memberships/4.png'
+import logo1 from '../assets/MEMBERSHIPS/1.png'
+import logo2 from '../assets/MEMBERSHIPS/2.png'
+import logo3 from '../assets/MEMBERSHIPS/3.png'
+import logo4 from '../assets/MEMBERSHIPS/4.png'
 
 export function Memberships() {
   const { theme } = useTheme()

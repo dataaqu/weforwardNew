@@ -6,6 +6,30 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'bankgothic': ['BankGothic', 'sans-serif'],
+      },
+      animation: {
+        marquee: "marquee var(--duration) linear infinite",
+        "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          from: { transform: "translateX(0%)" },
+          to: { transform: "translateX(-100%)" },
+        },
+        "marquee-vertical": {
+          from: { transform: "translateY(0%)" },
+          to: { transform: "translateY(-100%)" },
+        },
+      },
+      boxShadow: {
+        glow: "0 0 20px rgba(48, 159, 105, 0.7), 0 0 40px rgba(47, 249, 195, 0.5), 0 0 60px rgba(79, 209, 197, 0.3)",
+        glow2: "0 0 20px rgba(50, 255, 50, 0.7), 0 0 40px rgba(20, 200, 20, 0.5), 0 0 60px rgba(5, 150, 5, 0.3)",
+      },
+      brightness: {
+        150: "1.5",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

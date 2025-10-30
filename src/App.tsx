@@ -9,6 +9,14 @@ import { HomePage } from './pages/HomePage'
 import { BlogPage } from './pages/BlogPage'
 import { BlogPostDetail } from './pages/BlogPostDetail'
 import { NotFoundPage } from './pages/NotFoundPage'
+import { 
+  AirFreightPage, 
+  RoadFreightPage, 
+  SeaFreightPage, 
+  RailFreightPage, 
+  WarehousePage, 
+  BrokeragePage 
+} from './pages/services'
 import { useLoader } from './hooks/useLoader'
 
 // Lazy load admin components to reduce initial bundle size
@@ -51,6 +59,50 @@ function App() {
               <div className="min-h-screen">
                 <Header />
                 <BlogPostDetail />
+                <Footer />
+              </div>
+            } />
+            
+            {/* Service routes */}
+            <Route path="/services/air-freight" element={
+              <div className="min-h-screen">
+                <Header />
+                <AirFreightPage />
+                <Footer />
+              </div>
+            } />
+            <Route path="/services/road-freight" element={
+              <div className="min-h-screen">
+                <Header />
+                <RoadFreightPage />
+                <Footer />
+              </div>
+            } />
+            <Route path="/services/sea-freight" element={
+              <div className="min-h-screen">
+                <Header />
+                <SeaFreightPage />
+                <Footer />
+              </div>
+            } />
+            <Route path="/services/rail-freight" element={
+              <div className="min-h-screen">
+                <Header />
+                <RailFreightPage />
+                <Footer />
+              </div>
+            } />
+            <Route path="/services/warehouse" element={
+              <div className="min-h-screen">
+                <Header />
+                <WarehousePage />
+                <Footer />
+              </div>
+            } />
+            <Route path="/services/brokerage" element={
+              <div className="min-h-screen">
+                <Header />
+                <BrokeragePage />
                 <Footer />
               </div>
             } />

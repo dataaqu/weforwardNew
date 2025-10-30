@@ -9,7 +9,7 @@ export function Services() {
   
   return (
     <section id="services" className={`py-20 ${
-      theme === 'dark' ? 'bg-stone-950' : 'bg-neutral-50'
+      theme === 'dark' ? 'bg-stone-950' : 'bg-stone-100'
     }`}>
       <div className="container mx-auto px-4">
         <motion.div

@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* BankGothic Font */
+@font-face {
+  font-family: 'BankGothic';
+  src: url('./assets/fonts/BankGothic Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -42,11 +51,11 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: oklch(0.92 0.003 83.66);
   --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
+  --card: oklch(0.95 0.002 83.66);
   --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
+  --popover: oklch(0.95 0.002 83.66);
   --popover-foreground: oklch(0.129 0.042 264.695);
   --primary: oklch(0.208 0.042 265.755);
   --primary-foreground: oklch(0.984 0.003 247.858);
@@ -81,7 +90,7 @@
   --secondary-color: #2ff9c3;
   --background-color: #0c0a09; /* stone-950 */
   --radius: 0.625rem;
-  --background: oklch(0.98 0.004 83.66); /* stone-50 for light mode */
+  --background: oklch(0.92 0.003 83.66); /* softer light mode background */
   --foreground: oklch(0.129 0.015 83.66); /* stone-900 for light mode */
 }
 
@@ -125,6 +134,24 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Apply BankGothic to all English headings */
+  h1:lang(en), h2:lang(en), h3:lang(en), h4:lang(en), h5:lang(en), h6:lang(en) {
+    font-family: 'BankGothic', sans-serif;
+  }
+
+  /* Apply BankGothic to headings in general (when lang attribute not specified) */
+  /* But exclude headings containing Georgian text */
+  h1:not(:lang(ka)), h2:not(:lang(ka)), h3:not(:lang(ka)),
+  h4:not(:lang(ka)), h5:not(:lang(ka)), h6:not(:lang(ka)) {
+    font-family: 'BankGothic', sans-serif;
+  }
+
+  /* Override: Do not apply BankGothic to Georgian headings */
+  h1:lang(ka), h2:lang(ka), h3:lang(ka),
+  h4:lang(ka), h5:lang(ka), h6:lang(ka) {
+    font-family: inherit;
   }
 }
 

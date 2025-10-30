@@ -44,7 +44,7 @@ const RotateWords = ({
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
           className={`text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3] ${
-            language === 'ka' ? 'text-2xl sm:text-3xl lg:text-4xl leading-tight' : ''
+            language === 'ka' ? 'text-2xl sm:text-3xl lg:text-4xl leading-tight' : 'text-3xl sm:text-4xl lg:text-5xl'
           }`}
           style={language === 'ka' ? { lineHeight: '1.2' } : {}}
         >
@@ -120,6 +120,7 @@ export function HeroSection() {
 
             {/* Main Heading with Rotating Words */}
             <motion.h1
+              lang={language}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.4 }}
@@ -127,10 +128,10 @@ export function HeroSection() {
                 theme === 'dark' ? 'text-white' : 'text-black'
               }`}
             >
-              <span className="block mb-2">You Deal</span>
-              <RotateWords 
-                text="We Deliver " 
-                words={language === 'en' ? ["Air", "Road", "Sea", "Rail"] : ["საჰაერო", "სახმელეთო", "საზღვაო", "სარკინიგზო"]}
+              <span className="block mb-2">YOU DEAL</span>
+              <RotateWords
+                text="WE DELIVER"
+                words={language === 'en' ? ["AIR", "ROAD", "SEA", "RAIL"] : ["საჰაერო", "სახმელეთო", "საზღვაო", "სარკინიგზო"]}
                 language={language}
               />
             </motion.h1>
@@ -150,14 +151,14 @@ export function HeroSection() {
             >
               {language === 'en' ? (
                 <>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3] font-bold">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3] font-bold font-bankgothic text-2xl sm:text-3xl">
                     WEFORWARD
                   </span>{" "}
                   founded in 2009, we take pride in our exceptional journey, rooted in experience, loyalty, and teamwork. Our seasoned team brings decades of industry expertise, ensuring your cargo is in capable hands. Our unwavering commitment to loyalty ensures we prioritize your interests above all else, while our seamless teamwork guarantees efficient and reliable shipping solutions. Trust us to navigate your logistics needs with precision and dedication, making your cargo's journey our top priority.
                 </>
               ) : (
                 <>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3] font-bold">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3] font-bold font-bankgothic text-2xl sm:text-3xl">
                     WEFORWARD
                   </span>{" "}
                   {t.hero.description.replace('weforward ', '')}
@@ -292,17 +293,6 @@ export function HeroSection() {
               <div className="relative h-full min-h-[500px] lg:min-h-[600px] w-full group">
                 <Carousel autoPlay={true} autoPlayInterval={5000} className="h-full">
                   <CarouselContent className="h-full">
-                    {/* Air Transport Slide */}
-                    <CarouselItem className="h-full">
-                      <div className="relative h-full bg-gradient-to-br from-stone-800/50 to-stone-900/50 rounded-2xl overflow-hidden shadow-2xl">
-                        <div 
-                          className="absolute inset-0 bg-cover bg-center"
-                          style={{ backgroundImage: `url(${planeImg})` }}
-                        />
-                        <div className="absolute inset-0 bg-black/40" />
-                      </div>
-                    </CarouselItem>
-
                     {/* Road Transport Slide */}
                     <CarouselItem className="h-full">
                       <div className="relative h-full bg-gradient-to-br from-stone-800/50 to-stone-900/50 rounded-2xl overflow-hidden shadow-2xl">
@@ -320,6 +310,17 @@ export function HeroSection() {
                         <div 
                           className="absolute inset-0 bg-cover bg-center"
                           style={{ backgroundImage: `url(${seaImg})` }}
+                        />
+                        <div className="absolute inset-0 bg-black/40" />
+                      </div>
+                    </CarouselItem>
+
+                    {/* Air Transport Slide */}
+                    <CarouselItem className="h-full">
+                      <div className="relative h-full bg-gradient-to-br from-stone-800/50 to-stone-900/50 rounded-2xl overflow-hidden shadow-2xl">
+                        <div 
+                          className="absolute inset-0 bg-cover bg-center"
+                          style={{ backgroundImage: `url(${planeImg})` }}
                         />
                         <div className="absolute inset-0 bg-black/40" />
                       </div>

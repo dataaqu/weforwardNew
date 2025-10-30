@@ -1,79 +1,68 @@
-import { motion } from 'framer-motion'
+'use client';
+import { motion, AnimatePresence } from 'motion/react';
+import { cn } from '../../lib/utils';
 
 interface TextEffectProps {
-  children: string
-  per?: 'word' | 'char'
-  preset?: 'fade' | 'slide' | 'scale' | 'blur'
-  className?: string
-  delay?: number
+  children: string;
+  className?: string;
+  per?: 'word' | 'char';
+  variants?: any;
+  trigger?: boolean;
 }
 
-export function TextEffect({ 
-  children, 
-  per = 'char', 
-  preset = 'fade', 
-  className = '',
-  delay = 0 
+export function TextEffect({
+  children,
+  className,
+  per = 'word',
+  variants,
+  trigger = true,
 }: TextEffectProps) {
-  const text = children
-  const elements = per === 'char' ? text.split('') : text.split(' ')
+  const words = children.split(' ');
+  const chars = children.split('');
 
-  const getVariants = () => {
-    switch (preset) {
-      case 'fade':
-        return {
-          hidden: { opacity: 0 },
-          visible: { opacity: 1 }
-        }
-      case 'slide':
-        return {
-          hidden: { opacity: 0, y: 20 },
-          visible: { opacity: 1, y: 0 }
-        }
-      case 'scale':
-        return {
-          hidden: { opacity: 0, scale: 0.8 },
-          visible: { opacity: 1, scale: 1 }
-        }
-      case 'blur':
-        return {
-          hidden: { opacity: 0, filter: 'blur(10px)' },
-          visible: { opacity: 1, filter: 'blur(0px)' }
-        }
-      default:
-        return {
-          hidden: { opacity: 0 },
-          visible: { opacity: 1 }
-        }
-    }
-  }
-
-  const variants = getVariants()
-
-  return (
-    <motion.span
-      className={className}
+  const renderWords = () => (
+    <motion.div
+      className={cn('inline-flex flex-wrap', className)}
+      variants={variants?.container}
       initial="hidden"
-      animate="visible"
-      transition={{
-        staggerChildren: per === 'char' ? 0.05 : 0.1,
-        delayChildren: delay
-      }}
+      animate={trigger ? 'visible' : 'exit'}
+      exit="exit"
     >
-      {elements.map((element, index) => (
+      {words.map((word, wordIndex) => (
         <motion.span
-          key={index}
-          variants={variants}
-          transition={{
-            duration: 0.4,
-            ease: "easeOut"
-          }}
-          style={{ display: 'inline-block' }}
+          key={`${word}-${wordIndex}`}
+          className="inline-block mr-2"
+          variants={variants?.item}
         >
-          {element === ' ' ? '\u00A0' : element}
-          {per === 'word' && index < elements.length - 1 ? ' ' : ''}
+          {word}
         </motion.span>
       ))}
-    </motion.span>
-  )
+    </motion.div>
+  );
+
+  const renderChars = () => (
+    <motion.div
+      className={cn('inline-flex', className)}
+      variants={variants?.container}
+      initial="hidden"
+      animate={trigger ? 'visible' : 'exit'}
+      exit="exit"
+    >
+      {chars.map((char, charIndex) => (
+        <motion.span
+          key={`${char}-${charIndex}`}
+          className="inline-block"
+          variants={variants?.item}
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </motion.span>
+      ))}
+    </motion.div>
+  );
+
+  return (
+    <AnimatePresence mode="wait">
+      {per === 'word' ? renderWords() : renderChars()}
+    </AnimatePresence>
+  );
 }

@@ -53,19 +53,23 @@ export function Loader() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
               <TextEffect 
                 per='char' 
-                preset='fade'
-                delay={1.0}
                 className="text-white"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1 }
+                }}
               >
-                You Deal
+                YOU DEAL
               </TextEffect>
               <TextEffect 
                 per='char' 
-                preset='fade'
-                delay={1.5}
                 className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3]"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1 }
+                }}
               >
-                We Deliver
+                WE DELIVER
               </TextEffect>
             </div>
           </h1>

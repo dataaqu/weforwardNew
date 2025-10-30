@@ -4,7 +4,6 @@ import type { BlogPost, CreateBlogPostData } from '../../types/blog';
 import { blogService } from '../../services/blogService';
 import { SEOAuditService, type SEOAuditResult } from '../../services/seoAuditService';
 import { SEOAuditPanel } from './SEOAuditPanel';
-import { BlogPreview } from './BlogPreview';
 
 interface BlogPostEditorProps {
   post?: BlogPost;
@@ -48,7 +47,6 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
   const [seoTagsKa, setSeoTagsKa] = useState<string>('');
   const [seoAuditResult, setSeoAuditResult] = useState<SEOAuditResult | null>(null);
   const [showSeoAudit, setShowSeoAudit] = useState(false);
-  const [showPreview, setShowPreview] = useState(false);
 
   const [images, setImages] = useState<Array<{
     file: File | null;
@@ -1267,20 +1265,6 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
           🔍 SEO Audit
         </motion.button>
 
-        {/* Preview Button */}
-        <motion.button
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            setShowPreview(true);
-          }}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="flex-1 sm:flex-none px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg transition-shadow duration-200 flex items-center justify-center gap-2"
-        >
-          👁️ {post ? 'Preview Changes' : 'Preview Blog'}
-        </motion.button>
-
         <motion.button
           type="submit"
           disabled={loading || uploadingImages}
@@ -1311,18 +1295,6 @@ export const BlogPostEditorSimple: React.FC<BlogPostEditorProps> = ({
           setShowSeoAudit(false);
           processSave();
         }}
-      />
-
-      {/* Blog Preview */}
-      <BlogPreview
-        isVisible={showPreview}
-        onClose={() => setShowPreview(false)}
-        blogData={formData}
-        seoTags={seoTags}
-        seoTagsKa={seoTagsKa}
-        selectedH1En={selectedH1En}
-        selectedH1Ka={selectedH1Ka}
-        featuredImageUrl={formData.featuredImage || images.find(img => img.isMain)?.preview || ''}
       />
     </form>
   );

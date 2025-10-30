@@ -15,34 +15,40 @@ export function FocusCardsDemo() {
   
   const cards = [
     {
-      title: t.services.services.airFreight.title,
-      src: airServiceImg,
-      description: t.services.services.airFreight.description
-    },
-    {
       title: t.services.services.roadFreight.title,
       src: roadServiceImg,
-      description: t.services.services.roadFreight.description
+      description: t.services.services.roadFreight.description,
+      link: '/services/road-freight'
     },
     {
       title: t.services.services.seaFreight.title,
       src: seaServiceImg,
-      description: t.services.services.seaFreight.description
+      description: t.services.services.seaFreight.description,
+      link: '/services/sea-freight'
+    },
+    {
+      title: t.services.services.airFreight.title,
+      src: airServiceImg,
+      description: t.services.services.airFreight.description,
+      link: '/services/air-freight'
     },
     {
       title: t.services.services.railFreight.title,
       src: railServiceImg,
-      description: t.services.services.railFreight.description
+      description: t.services.services.railFreight.description,
+      link: '/services/rail-freight'
     },
     {
       title: t.services.services.warehouse.title,
       src: warehouseServiceImg,
-      description: t.services.services.warehouse.description
+      description: t.services.services.warehouse.description,
+      link: '/services/warehouse'
     },
     {
       title: t.services.services.brokerage.title,
       src: brokageServiceImg,
-      description: t.services.services.brokerage.description
+      description: t.services.services.brokerage.description,
+      link: '/services/brokerage'
     },
   ];
 

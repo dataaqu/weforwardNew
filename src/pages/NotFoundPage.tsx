@@ -144,7 +144,7 @@ export function NotFoundPage() {
                 theme === 'dark' ? 'text-[#2ff9c3] hover:text-[#309f69]' : 'text-[#309f69] hover:text-[#2ff9c3]'
               }`}
             >
-              Homepage
+              HOMEPAGE
             </button>
             <button
               onClick={() => navigate('/blog')}
@@ -152,7 +152,7 @@ export function NotFoundPage() {
                 theme === 'dark' ? 'text-[#2ff9c3] hover:text-[#309f69]' : 'text-[#309f69] hover:text-[#2ff9c3]'
               }`}
             >
-              Blog
+              BLOG
             </button>
             <button
               onClick={() => navigate('/#services')}
@@ -160,7 +160,7 @@ export function NotFoundPage() {
                 theme === 'dark' ? 'text-[#2ff9c3] hover:text-[#309f69]' : 'text-[#309f69] hover:text-[#2ff9c3]'
               }`}
             >
-              Services
+              SERVICES
             </button>
             <button
               onClick={() => navigate('/#contact')}
@@ -168,7 +168,7 @@ export function NotFoundPage() {
                 theme === 'dark' ? 'text-[#2ff9c3] hover:text-[#309f69]' : 'text-[#309f69] hover:text-[#2ff9c3]'
               }`}
             >
-              Contact
+              CONTACT
             </button>
           </div>
         </motion.div>

@@ -1,0 +1,6 @@
+export { AirFreightPage } from './AirFreightPage'
+export { RoadFreightPage } from './RoadFreightPage'
+export { SeaFreightPage } from './SeaFreightPage'
+export { RailFreightPage } from './RailFreightPage'
+export { WarehousePage } from './WarehousePage'
+export { BrokeragePage } from './BrokeragePage'

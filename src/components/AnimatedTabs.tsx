@@ -1,25 +1,42 @@
-import { Home, FileText, Phone } from 'lucide-react';
+import { Home, FileText, Phone, BookOpen, Calculator } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function AnimatedTabs() {
   const [activeTab, setActiveTab] = useState('Home');
   const [isScrolling, setIsScrolling] = useState(false);
+  const navigate = useNavigate();
 
   const TABS = [
     {
       label: 'Home',
       icon: <Home className='h-5 w-5' />,
       sectionId: 'home',
+      isExternal: false,
     },
     {
       label: 'Services',
       icon: <FileText className='h-5 w-5' />,
       sectionId: 'services',
+      isExternal: false,
+    },
+    {
+      label: 'Calculator',
+      icon: <Calculator className='h-5 w-5' />,
+      sectionId: 'calculator',
+      isExternal: false,
     },
     {
       label: 'Contact',
       icon: <Phone className='h-5 w-5' />,
       sectionId: 'contact',
+      isExternal: false,
+    },
+    {
+      label: 'Blog',
+      icon: <BookOpen className='h-5 w-5' />,
+      sectionId: 'blog',
+      isExternal: true,
     },
   ];
 
@@ -29,7 +46,7 @@ export function AnimatedTabs() {
       // Don't update active tab while user is clicking and scrolling
       if (isScrolling) return;
       
-      const sections = TABS.map(tab => ({
+      const sections = TABS.filter(tab => !tab.isExternal).map(tab => ({
         id: tab.sectionId,
         element: document.getElementById(tab.sectionId),
         label: tab.label
@@ -52,15 +69,24 @@ export function AnimatedTabs() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isScrolling]);
 
-  // Handle tab click to scroll to section
+  // Handle tab click to scroll to section or navigate
   const handleTabClick = (tab: typeof TABS[0]) => {
+    // Handle external navigation (like blog)
+    if (tab.isExternal) {
+      if (tab.sectionId === 'blog') {
+        navigate('/blog');
+      }
+      return;
+    }
+
     // Immediately set active tab and disable scroll listener
     setActiveTab(tab.label);
     setIsScrolling(true);
     
     const element = document.getElementById(tab.sectionId);
     if (element) {
-      const headerOffset = 100;
+      // Special offset for calculator section
+      const headerOffset = tab.sectionId === 'calculator' ? 150 : 100;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 

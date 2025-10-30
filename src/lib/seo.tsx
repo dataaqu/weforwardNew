@@ -83,8 +83,12 @@ export function SEO({
     updateMetaTag('og:title', fullTitle, true)
     updateMetaTag('og:description', description, true)
     updateMetaTag('og:image', ogImage, true)
+    updateMetaTag('og:image:width', '1200', true)
+    updateMetaTag('og:image:height', '630', true)
+    updateMetaTag('og:image:alt', fullTitle, true)
     updateMetaTag('og:type', ogType, true)
     updateMetaTag('og:site_name', 'WeForward', true)
+    updateMetaTag('og:locale', 'en_US', true)
     
     // Add blog-specific Open Graph tags for articles
     if (ogType === 'article') {
@@ -119,18 +123,21 @@ export function SEO({
         updateMetaTag('og:url', canonicalUrl, true)
       }
     }
+    
+    // Add canonical URL for non-articles too
+    if (canonicalUrl && ogType !== 'article') {
+      updateMetaTag('og:url', canonicalUrl, true)
+    }
 
     // Twitter Card tags
     updateMetaTag('twitter:card', 'summary_large_image')
     updateMetaTag('twitter:title', fullTitle)
     updateMetaTag('twitter:description', description)
     updateMetaTag('twitter:image', ogImage)
+    updateMetaTag('twitter:image:alt', fullTitle)
     updateMetaTag('twitter:site', '@WeForward')
     updateMetaTag('twitter:creator', '@WeForward')
     updateMetaTag('twitter:domain', 'weforward.ge')
-    
-    // Facebook specific tags
-    updateMetaTag('fb:app_id', '123456789') // You should replace this with actual Facebook App ID
     
     // Additional Open Graph tags for better sharing
     updateMetaTag('og:locale', 'en_US', true)

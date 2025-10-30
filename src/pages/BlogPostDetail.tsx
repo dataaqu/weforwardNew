@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { SEO, StructuredData, generateStructuredData } from '../lib/seo';
 import { useTheme } from '../components/theme-provider';
 import { useTranslation } from '../components/translation-provider';
+import { ShareButtons } from '../components/ShareButtons';
 import { blogService } from '../services/blogService';
 import type { BlogPost } from '../types/blog';
 
@@ -163,6 +164,16 @@ export function BlogPostDetail() {
                 dangerouslySetInnerHTML={{ __html: content }}
               />
 
+              {/* Share Buttons */}
+              <div className="mt-8">
+                <ShareButtons 
+                  url={`https://weforward.ge/blog/${post.slug}`}
+                  title={title}
+                  description={metaDescription || excerpt}
+                  imageUrl={fullImageUrl}
+                />
+              </div>
+
               {/* Tags Section */}
               {(language === 'en' ? post.tags : post.tagsKa).length > 0 && (
                 <div className={`mt-12 pt-8 border-t ${
@@ -171,7 +182,7 @@ export function BlogPostDetail() {
                   <h3 className={`text-lg font-semibold mb-4 ${
                     theme === 'dark' ? 'text-blue-100' : 'text-gray-900'
                   }`}>
-                    {language === 'en' ? 'Tagged in' : 'ტეგები'}
+                    {language === 'en' ? 'TAGGED IN' : 'ტეგები'}
                   </h3>
                   <div className="flex flex-wrap gap-3">
                     {(language === 'en' ? post.tags : post.tagsKa).map((tag, index) => (
@@ -199,12 +210,12 @@ export function BlogPostDetail() {
                     <p className={`font-medium ${
                       theme === 'dark' ? 'text-blue-100' : 'text-gray-900'
                     }`}>
-                      {language === 'en' ? 'Written by WEFORWARD' : 'ავტორი: WEFORWARD'}
+                      {language === 'en' ? 'WRITTEN BY WEFORWARD' : 'ავტორი: WEFORWARD'}
                     </p>
                     <p className={`text-sm ${
                       theme === 'dark' ? 'text-slate-300' : 'text-gray-600'
                     }`}>
-                      {language === 'en' ? 'Published on' : 'გამოქვეყნდა'} {post.publishedAt?.toLocaleDateString(
+                      {language === 'en' ? 'PUBLISHED ON' : 'გამოქვეყნდა'} {post.publishedAt?.toLocaleDateString(
                         language === 'en' ? 'en-US' : 'ka-GE',
                         { 
                           year: 'numeric', 

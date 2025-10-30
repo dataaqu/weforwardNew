@@ -97,9 +97,9 @@ export function BlogPage() {
               <h1 className={`text-4xl md:text-6xl font-bold mb-6 ${
                 theme === 'dark' ? 'text-white' : 'text-black'
               }`}>
-                {language === 'en' ? 'Our' : 'ჩვენი'}{' '}
+                {language === 'en' ? 'OUR' : 'ჩვენი'}{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3]">
-                  {language === 'en' ? 'Blog' : 'ბლოგი'}
+                  {language === 'en' ? 'BLOG' : 'ბლოგი'}
                 </span>
               </h1>
               <p className={`text-lg max-w-2xl mx-auto ${
@@ -127,9 +127,8 @@ export function BlogPage() {
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {currentPosts.map((post, index) => (
-                  <Link to={`/blog/${post.slug}`}>
+                  <Link to={`/blog/${post.slug}`} key={post.id}>
                     <motion.article
-                      key={post.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: index * 0.1 }}

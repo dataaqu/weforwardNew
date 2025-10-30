@@ -71,6 +71,7 @@ export interface Translations {
     }
     details: {
       followUs: string
+      address: string
     }
     success: {
       title: string
@@ -92,7 +93,140 @@ export interface Translations {
     title: string
     subtitle: string
   }
-  
+
+  // Partners
+  partners: {
+    title: string
+    subtitle: string
+  }
+
+  // Memberships
+  memberships: {
+    title: string
+    subtitle: string
+    cards: {
+      fiata: {
+        title: string
+        description: string
+      }
+      wca: {
+        title: string
+        description: string
+      }
+      tct: {
+        title: string
+        description: string
+      }
+      iata: {
+        title: string
+        description: string
+      }
+    }
+  }
+
+  // Road Freight
+  roadFreight: {
+    fullTrailer: {
+      title: string
+      description: string
+    }
+    groupage: {
+      title: string
+      description: string
+    }
+  }
+
+  // Air Freight
+  airFreight: {
+    services: {
+      title: string
+      description: string
+    }
+  }
+
+  // Rail Freight
+  railFreight: {
+    fullContainer: {
+      title: string
+      description: string
+    }
+    groupage: {
+      title: string
+      description: string
+    }
+  }
+
+  // Brokerage
+  brokerage: {
+    services: {
+      title: string
+      description: string
+    }
+  }
+
+  // Warehouse
+  warehouse: {
+    services: {
+      title: string
+      description: string
+    }
+  }
+
+  // Sea Freight
+  seaFreight: {
+    fullContainer: {
+      title: string
+      description: string
+    }
+    groupage: {
+      title: string
+      description: string
+    }
+  }
+
+  // Calculator
+  calculator: {
+    title: string
+    subtitle: string
+    packingType: string
+    quantity: string
+    dimensions: string
+    length: string
+    width: string
+    height: string
+    weight: string
+    transportMode: string
+    calculate: string
+    reset: string
+    placeholder: string
+    results: {
+      title: string
+      totalVolume: string
+      loadingMeters: string
+      chargeableWeight: string
+    }
+    packingTypes: {
+      choose: string
+      miniPallet: string
+      euroPallet: string
+      blockPallet: string
+      custom: string
+    }
+    transportModes: {
+      airFreight: string
+      courier: string
+      seaFreight: string
+      truck: string
+    }
+    units: {
+      cm: string
+      kg: string
+      cbm: string
+      ldm: string
+      pieces: string
+    }
+  }
+
   // Error Pages
   errors?: {
     pageNotFound?: {
@@ -122,42 +256,42 @@ export const translations: { en: Translations; ka: Translations } = {
       }
     },
     services: {
-      title: "Our",
-      subtitle: "Services",
+      title: "OUR",
+      subtitle: "SERVICES",
       services: {
         seaFreight: {
-          title: "Sea Freight",
+          title: "SEA FREIGHT",
           description: "Cost-effective ocean shipping solutions for your cargo worldwide with reliable transit times."
         },
         airFreight: {
-          title: "Air Freight", 
+          title: "AIR FREIGHT",
           description: "Fast and secure air cargo services for time-sensitive shipments across the globe."
         },
         railFreight: {
-          title: "Rail Freight",
+          title: "RAIL FREIGHT",
           description: "Eco-friendly rail transport solutions connecting major trade routes efficiently."
         },
         roadFreight: {
-          title: "Road Freight",
+          title: "ROAD FREIGHT",
           description: "Flexible trucking services for door-to-door delivery across regional networks."
         },
         warehouse: {
-          title: "Warehousing",
+          title: "WAREHOUSING",
           description: "Modern storage facilities with inventory management and distribution services."
         },
         brokerage: {
-          title: "Customs Brokerage", 
+          title: "CUSTOMS BROKERAGE",
           description: "Expert customs clearance and trade compliance services to expedite your shipments."
         }
       }
     },
     contact: {
-      title: "Get In",
-      titleHighlight: "Touch",
-      subtitle: "Let's Build Your Logistics Solution",
+      title: "GET IN",
+      titleHighlight: "TOUCH",
+      subtitle: "LET'S BUILD YOUR LOGISTICS SOLUTION",
       description: "Our team is ready to optimize your supply chain and accelerate your business growth.",
       form: {
-        title: "Send us a Message",
+        title: "SEND US A MESSAGE",
         firstName: "First Name",
         lastName: "Last Name", 
         email: "Email Address",
@@ -170,7 +304,8 @@ export const translations: { en: Translations; ka: Translations } = {
         selectService: "Select Service"
       },
       details: {
-        followUs: "Follow Us"
+        followUs: "Follow Us",
+        address: "Tbilisi. G. Kartozia #8"
       },
       success: {
         title: "Message Sent Successfully!",
@@ -188,13 +323,128 @@ export const translations: { en: Translations; ka: Translations } = {
       title: "Under Construction",
       subtitle: "We're working hard to bring you amazing content about logistics trends and industry insights. Stay tuned for updates!"
     },
+    partners: {
+      title: "OUR",
+      subtitle: "PARTNERS"
+    },
+    memberships: {
+      title: "OUR",
+      subtitle: "MEMBERSHIPS",
+      cards: {
+        fiata: {
+          title: "FIATA",
+          description: "International Federation of Freight Forwarders Associations - Global network ensuring highest standards in freight forwarding."
+        },
+        wca: {
+          title: "WCA",
+          description: "World Cargo Alliance - Leading global logistics network connecting trusted independent freight forwarders worldwide."
+        },
+        tct: {
+          title: "TCT",
+          description: "The Cooperative Team - International network of logistics professionals providing comprehensive freight forwarding solutions."
+        },
+        iata: {
+          title: "IATA",
+          description: "International Air Transport Association - Trusted partner ensuring safe, secure and efficient air cargo operations."
+        }
+      }
+    },
+    roadFreight: {
+      fullTrailer: {
+        title: "FULL TRAILER TRANSPORTATION",
+        description: "Europe 🇪🇺\nTurkey 🇹🇷\nChina 🇨🇳\nAzerbaijan 🇦🇿\nArmenia 🇦🇲\nBelarus 🇧🇾\nUkraine 🇺🇦\nRussia 🇷🇺\nCentral Asian Countries 🇰🇿🇹🇲🇰🇬🇺🇿🇹🇯"
+      },
+      groupage: {
+        title: "GROUPAGE CARGO TRANSPORTATION",
+        description: "• Europe - all countries with main intermediate warehouses - Bulgaria, Italy, Germany\n• China - Yiwu, Khorgos\n• Turkey - Istanbul, Ankara\n• Ukraine - without transshipment\n• Russia - without transshipment"
+      }
+    },
+    airFreight: {
+      services: {
+        title: "AIR FREIGHT SERVICES",
+        description: "• From any point in the world to any point\n• Dry general cargo transportation\n• Temperature-controlled cargo transportation"
+      }
+    },
+    railFreight: {
+      fullContainer: {
+        title: "FULL CONTAINER TRANSPORTATION",
+        description: "• Countries: China, Kazakhstan, Azerbaijan\n• Transportation: 40-foot containers\n• Non-hazardous cargo only\n• Any terms: EXW, FCA"
+      },
+      groupage: {
+        title: "GROUPAGE CONTAINER TRANSPORTATION",
+        description: "• Country: From China\n• Transportation: 40-foot containers\n• Non-hazardous cargo only\n• Any terms: EXW, FCA"
+      }
+    },
+    brokerage: {
+      services: {
+        title: "CUSTOMS BROKERAGE SERVICES",
+        description: "• Preparation and registration of customs declarations: Import, export, transit\n• Verification and correction of cargo transportation documents: Invoice, Packing list, CMR, BL, AWB\n• Temporary import / export\n• Cargo classification with customs codes"
+      }
+    },
+    warehouse: {
+      services: {
+        title: "WAREHOUSE SERVICES",
+        description: "• Using our global partner network, we can provide temporary warehousing in any country\n• 24/7 monitoring\n• Secure and well-equipped warehouses"
+      }
+    },
+    seaFreight: {
+      fullContainer: {
+        title: "FULL CONTAINER TRANSPORTATION",
+        description: "• From any country worldwide\n• Any purchase terms: EXW, FCA, FOB"
+      },
+      groupage: {
+        title: "GROUPAGE CONTAINER TRANSPORTATION",
+        description: "• From China\n• Cargo consolidation in all major ports: Qingdao, Ningbo, Shenzhen, Shanghai, Guangzhou\n• Transportation under any terms: EXW, FCA, FOB"
+      }
+    },
+    calculator: {
+      title: "CARGO",
+      subtitle: "CALCULATOR",
+      packingType: "Packing Type",
+      quantity: "Quantity",
+      dimensions: "Dimensions",
+      length: "Length",
+      width: "Width", 
+      height: "Height",
+      weight: "Weight per Unit",
+      transportMode: "Transport Mode",
+      calculate: "Calculate",
+      reset: "Reset",
+      placeholder: "Fill in the form and click calculate to see results",
+      results: {
+        title: "Calculation Results",
+        totalVolume: "Total Volume",
+        loadingMeters: "Loading Meters",
+        chargeableWeight: "Chargeable Weight"
+      },
+      packingTypes: {
+        choose: "Choose",
+        miniPallet: "Mini Pallet",
+        euroPallet: "Euro Pallet",
+        blockPallet: "Block Pallet",
+        custom: "Custom"
+      },
+      transportModes: {
+        airFreight: "Air Freight",
+        courier: "Courier",
+        seaFreight: "Sea Freight",
+        truck: "Truck"
+      },
+      units: {
+        cm: "cm",
+        kg: "KG",
+        cbm: "CBM",
+        ldm: "LDM",
+        pieces: "pcs"
+      }
+    },
     errors: {
       pageNotFound: {
-        title: "Page Not Found",
+        title: "PAGE NOT FOUND",
         message: "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
-        goHome: "Go Home",
-        goBack: "Go Back",
-        helpfulLinks: "You might be looking for:"
+        goHome: "GO HOME",
+        goBack: "GO BACK",
+        helpfulLinks: "YOU MIGHT BE LOOKING FOR:"
       }
     }
   },
@@ -261,7 +511,8 @@ export const translations: { en: Translations; ka: Translations } = {
         selectService: "აირჩიეთ სერვისი"
       },
       details: {
-        followUs: "გამოგვყევით"
+        followUs: "გამოგვყევით",
+        address: "თბილისი. გ. კარტოზიას #8"
       },
       success: {
         title: "შეტყობინება წარმატებით გაიგზავნა!",
@@ -278,6 +529,121 @@ export const translations: { en: Translations; ka: Translations } = {
     blog: {
       title: "მშენებლობის პროცესში",
       subtitle: "ჩვენ ვმუშაობთ, რომ მოგაწოდოთ საინტერესო კონტენტი ლოგისტიკის ტენდენციებისა და ინდუსტრიის ინსაიტების შესახებ. დარჩით ჩვენთან განახლებებისთვის!"
+    },
+    partners: {
+      title: "ჩვენი",
+      subtitle: "პარტნიორები"
+    },
+    memberships: {
+      title: "ჩვენი",
+      subtitle: "წევრობა",
+      cards: {
+        fiata: {
+          title: "FIATA",
+          description: "საერთაშორისო სატვირთო ექსპედიტორთა ფედერაციების ასოციაცია - გლობალური ქსელი, რომელიც უზრუნველყოფს უმაღლეს სტანდარტებს სატვირთო ექსპედიციაში."
+        },
+        wca: {
+          title: "WCA",
+          description: "მსოფლიო ტვირთების ალიანსი - წამყვანი გლობალური ლოგისტიკური ქსელი, რომელიც აერთიანებს სანდო დამოუკიდებელ სატვირთო ექსპედიტორებს მთელ მსოფლიოში."
+        },
+        tct: {
+          title: "TCT",
+          description: "სათანამშრომლო გუნდი - ლოგისტიკის პროფესიონალთა საერთაშორისო ქსელი, რომელიც უზრუნველყოფს ყოვლისმომცველ სატვირთო გადაზიდვის გადაწყვეტილებებს."
+        },
+        iata: {
+          title: "IATA",
+          description: "საერთაშორისო საჰაერო ტრანსპორტის ასოციაცია - სანდო პარტნიორი, რომელიც უზრუნველყოფს უსაფრთხო და ეფექტურ საჰაერო ტვირთების ოპერაციებს."
+        }
+      }
+    },
+    roadFreight: {
+      fullTrailer: {
+        title: "სრული ტრაილერებით ტრანსპორტირება",
+        description: "ევროპა 🇪🇺\nთურქეთი 🇹🇷\nჩინეთი 🇨🇳\nაზერბაიჯანი 🇦🇿\nსომხეთი 🇦🇲\nბელარუსი 🇧🇾\nუკრაინა 🇺🇦\nრუსეთი 🇷🇺\nშუა აზიის ქვეყნები 🇰🇿🇹🇲🇰🇬🇺🇿🇹🇯"
+      },
+      groupage: {
+        title: "ნაკრები ტვირთების ტრანსპორტირება",
+        description: "• ევროპა - ყველა ქვეყანაში მთავარი შუამავალი საწყობები - ბულგარეთი, იტალია, გერმანია\n• ჩინეთი - Yiwu, Khorgos\n• თურქეთი - სტამბული, ანკარა\n• უკრაინა - გადატვირთვის გარეშე\n• რუსეთი - გადატვირთვის გარეშე"
+      }
+    },
+    airFreight: {
+      services: {
+        title: "საჰაერო გადაზიდვები",
+        description: "• მსოფლიოს ნებისმიერი წერტილიდან, ნებისმიერ წერტილში\n• მშრალი ზოგადი ტვირთების ტრანსპორტირება\n• +/- რეჟიმიანი ტვირთების ტრანსპორტირება"
+      }
+    },
+    railFreight: {
+      fullContainer: {
+        title: "სრული კონტეინერებით",
+        description: "• ქვეყანა: ჩინეთი, ყაზახეთი, აზერბაიჯანი\n• ტრანსპორტირება: 40 ფუტიანი კონტეინერებით\n• მხოლოდ არასახიფათო ტვირთების\n• ნებისმიერი პირობით EXW, FCA"
+      },
+      groupage: {
+        title: "ნაკრები კონტეინერებით",
+        description: "• ქვეყანა: ჩინეთიდან\n• ტრანსპორტირება: 40 ფუტიანი კონტეინერებით\n• მხოლოდ არასახიფათო ტვირთების\n• ნებისმიერი პირობით EXW, FCA"
+      }
+    },
+    brokerage: {
+      services: {
+        title: "საბროკერო მომსახურება",
+        description: "• საბაჟო დეკლარაციების მომზადებასა და რეგისტრაციას - იმპორტი / ექსპორტი / ტრანზიტი\n• ტვირთის გადაზიდვის საბუთების გადამოწმებას და კორექტირებას: Invoice, Packing list, CMR, BL, AWB\n• დროებით იმპორტს / ექსპორტს\n• ტვირთის კლასიფიკაციას საბაჟო კოდებით"
+      }
+    },
+    warehouse: {
+      services: {
+        title: "სასაწყობე მომსახურება",
+        description: "• გლობალური პარტნიორთა ქსელის გამოყენებით შეგვიძლია ტვირთის დროებითი დასაწყობება ნებისმიერ ქვეყანაში\n• 24/7 მონიტორინგი\n• უსაფრთხო და გამართული საწყობები"
+      }
+    },
+    seaFreight: {
+      fullContainer: {
+        title: "სრული საზღვაო კონტეინერებით ტრანსპორტირება",
+        description: "• მსოფლიოს ნებისმიერი ქვეყნიდან\n• ნებისმიერი შესყიდვის პირობით EXW, FCA, FOB"
+      },
+      groupage: {
+        title: "ნაკრები საზღვაო კონტეინერებით ტრანსპორტირება",
+        description: "• ჩინეთიდან\n• ტვირთების კონსოლიდირება ყველა დიდ პორტში Qingdao, Ningo, Shenzhen, Shanghai, Guangzhou.\n• ტრანსპორტირება ნებისმიერი პირობით EXW, FCA, FOB."
+      }
+    },
+    calculator: {
+      title: "ტვირთის",
+      subtitle: "კალკულატორი",
+      packingType: "შეფუთვის ტიპი",
+      quantity: "რაოდენობა",
+      dimensions: "ზომები",
+      length: "სიგრძე",
+      width: "სიგანე",
+      height: "სიმაღლე", 
+      weight: "წონა ერთეულზე",
+      transportMode: "ტრანსპორტის რეჟიმი",
+      calculate: "გამოთვლა",
+      reset: "გასუფთავება",
+      placeholder: "შეავსეთ ფორმა და დააწკაპუნეთ გამოთვლაზე შედეგების სანახავად",
+      results: {
+        title: "გამოთვლის შედეგები",
+        totalVolume: "სულ მოცულობა",
+        loadingMeters: "დატვირთვის მეტრები",
+        chargeableWeight: "საანგარიშო წონა"
+      },
+      packingTypes: {
+        choose: "აირჩიეთ",
+        miniPallet: "მინი პალეტი",
+        euroPallet: "ევრო პალეტი", 
+        blockPallet: "ბლოკ პალეტი",
+        custom: "მორგებული"
+      },
+      transportModes: {
+        airFreight: "საჰაერო",
+        courier: "კურიერი",
+        seaFreight: "საზღვაო",
+        truck: "ტრანსპორტი"
+      },
+      units: {
+        cm: "სმ",
+        kg: "კგ",
+        cbm: "კუბ.მ",
+        ldm: "დმ",
+        pieces: "ცალი"
+      }
     },
     errors: {
       pageNotFound: {

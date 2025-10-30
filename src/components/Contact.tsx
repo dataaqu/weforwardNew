@@ -217,14 +217,14 @@ export function Contact() {
                 </div>
                 <div>
                   <a 
-                    href="https://maps.app.goo.gl/wKjqPU1BCDMxpwhU8" 
+                    href="https://maps.app.goo.gl/CgzwPiYwyA9986ta9" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className={`hover:text-[#309f69] transition-colors duration-200 ${
                       theme === 'dark' ? 'text-stone-300' : 'text-gray-700'
                     }`}
                   >
-                    S. Kandelaki 57
+                    {t.contact.details.address}
                   </a>
                 </div>
               </motion.div>

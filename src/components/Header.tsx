@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Globe } from 'lucide-react'
+import { Globe, ChevronDown, Plane, Truck, Ship, Train, Warehouse, FileText, Plus } from 'lucide-react'
 import { useTheme } from './theme-provider'
 import { useTranslation } from './translation-provider'
 import ToggleSwitch from './ToggleSwitch'
@@ -12,18 +12,29 @@ import blackText from '../assets/black-text.png'
 
 const navigation = [
   { name: 'home', href: 'home', isExternal: false },
-  { name: 'services', href: 'services', isExternal: false },
+  { name: 'services', href: 'services', isExternal: false, hasDropdown: true },
   { name: 'contact', href: 'contact', isExternal: false },
   { name: 'blog', href: '/blog', isExternal: true },
 ]
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isServicesOpen, setIsServicesOpen] = useState(false)
   const [scrollY, setScrollY] = useState(0)
   const { theme, setTheme } = useTheme()
   const { language, setLanguage, t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
+
+  // Services for dropdown
+  const getServicesList = () => [
+    { key: 'roadFreight', title: t.services.services.roadFreight.title, icon: Truck, link: '/services/road-freight' },
+    { key: 'seaFreight', title: t.services.services.seaFreight.title, icon: Ship, link: '/services/sea-freight' },
+    { key: 'airFreight', title: t.services.services.airFreight.title, icon: Plane, link: '/services/air-freight' },
+    { key: 'railFreight', title: t.services.services.railFreight.title, icon: Train, link: '/services/rail-freight' },
+    { key: 'warehouse', title: t.services.services.warehouse.title, icon: Warehouse, link: '/services/warehouse' },
+    { key: 'brokerage', title: t.services.services.brokerage.title, icon: FileText, link: '/services/brokerage' },
+  ]
 
   // Handle scroll effect
   useEffect(() => {
@@ -43,6 +54,33 @@ export function Header() {
       }, 100)
     }
   }, [location.pathname, location.hash])
+
+  // Close dropdowns when clicking outside (desktop only)
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element
+      // Only close on desktop if clicking outside the dropdown
+      if (isServicesOpen && !target.closest('[data-services-dropdown]') && window.innerWidth >= 768) {
+        setIsServicesOpen(false)
+      }
+    }
+    
+    if (isServicesOpen) {
+      document.addEventListener('click', handleClickOutside)
+      return () => document.removeEventListener('click', handleClickOutside)
+    }
+  }, [isServicesOpen])
+
+  // Close services dropdown when main menu is closed (but only reset, don't interfere with manual toggles)
+  useEffect(() => {
+    if (!isMenuOpen) {
+      // Small delay to prevent interference with manual clicks
+      const timer = setTimeout(() => {
+        setIsServicesOpen(false)
+      }, 50)
+      return () => clearTimeout(timer)
+    }
+  }, [isMenuOpen])
 
   // Dynamic header styles based on scroll
   const headerOpacity = scrollY > 100 ? 0.85 : 0.95
@@ -86,7 +124,17 @@ export function Header() {
   }
 
   const handleNavigation = (item: typeof navigation[0]) => {
-    if (item.isExternal) {
+    if (item.name === 'services' && item.hasDropdown) {
+      // For services with dropdown, just scroll to services section
+      if (location.pathname !== '/') {
+        navigate('/')
+        setTimeout(() => {
+          smoothScrollToSection(item.href)
+        }, 100)
+      } else {
+        smoothScrollToSection(item.href)
+      }
+    } else if (item.isExternal) {
       // Navigate to external page using React Router
       navigate(item.href)
     } else {
@@ -102,6 +150,14 @@ export function Header() {
         smoothScrollToSection(item.href)
       }
     }
+    setIsMenuOpen(false)
+    setIsServicesOpen(false)
+  }
+
+  const handleServiceClick = (serviceLink: string) => {
+    // Navigate to specific service page
+    navigate(serviceLink)
+    setIsServicesOpen(false)
     setIsMenuOpen(false)
   }
 
@@ -146,12 +202,12 @@ export function Header() {
                 ease: "easeOut",
                 delay: 0.3 
               }}
-              className="w-8 h-8 flex items-center justify-center"
+              className="w-16 h-16 flex items-center justify-center"
             >
               <img 
                 src={theme === 'dark' ? logo : blackIcon} 
                 alt="WeForward Logo" 
-                className="w-8 h-8 object-contain"
+                className="w-16 h-16 object-contain"
               />
             </motion.div>
             
@@ -177,23 +233,99 @@ export function Header() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navigation.map((item, index) => (
-              <motion.button
-                key={item.name}
-                onClick={() => handleNavigation(item)}
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className={`text-lg font-medium transition-all duration-300 relative group ${
-                  theme === 'dark' 
-                    ? 'text-gray-300 hover:text-white' 
-                    : 'text-black hover:text-gray-700'
-                }`}
-              >
-                {t.nav[item.name as keyof typeof t.nav]}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#309f69] to-[#2ff9c3] transition-all duration-300 group-hover:w-full"></span>
-              </motion.button>
+              <div key={item.name} className="relative">
+                {item.hasDropdown ? (
+                  <div
+                    className="relative"
+                    data-services-dropdown
+                    onMouseEnter={() => setIsServicesOpen(true)}
+                    onMouseLeave={() => setIsServicesOpen(false)}
+                  >
+                    <motion.button
+                      onClick={() => handleNavigation(item)}
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: index * 0.1 }}
+                      className={`text-lg font-medium transition-all duration-300 relative group flex items-center space-x-1 ${
+                        theme === 'dark' 
+                          ? 'text-gray-300 hover:text-white' 
+                          : 'text-black hover:text-gray-700'
+                      }`}
+                    >
+                      <span>{t.nav[item.name as keyof typeof t.nav]}</span>
+                      <motion.div
+                        animate={{ rotate: isServicesOpen ? 180 : 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <ChevronDown size={16} />
+                      </motion.div>
+                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#309f69] to-[#2ff9c3] transition-all duration-300 group-hover:w-full"></span>
+                    </motion.button>
+
+                    {/* Dropdown Menu */}
+                    <AnimatePresence>
+                      {isServicesOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                          transition={{ duration: 0.2, ease: "easeOut" }}
+                          className={`absolute top-full left-0 mt-2 w-64 rounded-lg shadow-2xl border backdrop-blur-md z-50 ${
+                            theme === 'dark' 
+                              ? 'bg-stone-950/95 border-stone-700/50' 
+                              : 'bg-white/95 border-gray-200'
+                          }`}
+                        >
+                          <div className="py-2">
+                            {getServicesList().map((service, serviceIndex) => {
+                              const IconComponent = service.icon
+                              return (
+                                <motion.button
+                                  key={service.key}
+                                  onClick={() => handleServiceClick(service.link)}
+                                  initial={{ opacity: 0, x: -10 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ delay: serviceIndex * 0.03 }}
+                                  className={`w-full text-left px-4 py-2 text-sm transition-all duration-200 flex items-center space-x-3 ${
+                                    theme === 'dark' 
+                                      ? 'text-gray-300 hover:text-white hover:bg-stone-800/50' 
+                                      : 'text-gray-700 hover:text-black hover:bg-gray-100/50'
+                                  }`}
+                                >
+                                  <IconComponent 
+                                    size={16} 
+                                    className="text-[#309f69] flex-shrink-0" 
+                                  />
+                                  <span>{service.title}</span>
+                                </motion.button>
+                              )
+                            })}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <motion.button
+                    onClick={() => handleNavigation(item)}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    className={`text-lg font-medium transition-all duration-300 relative group ${
+                      theme === 'dark' 
+                        ? 'text-gray-300 hover:text-white' 
+                        : 'text-black hover:text-gray-700'
+                    }`}
+                  >
+                    {t.nav[item.name as keyof typeof t.nav]}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#309f69] to-[#2ff9c3] transition-all duration-300 group-hover:w-full"></span>
+                  </motion.button>
+                )}
+              </div>
             ))}
             
             {/* Toggle Buttons */}
@@ -281,17 +413,85 @@ export function Header() {
             >
             <div className="py-4 space-y-1">
               {navigation.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => handleNavigation(item)}
-                  className={`block w-full text-left px-4 py-3 font-medium transition-all duration-200 ${
-                    theme === 'dark' 
-                      ? 'text-gray-300 hover:text-white hover:bg-stone-800/50' 
-                      : 'text-black hover:text-gray-700 hover:bg-gray-100/50'
-                  }`}
-                >
-                  {t.nav[item.name as keyof typeof t.nav]}
-                </button>
+                <div key={item.name}>
+                  {item.hasDropdown ? (
+                    <div>
+                      <div className="flex items-center">
+                        <button
+                          onClick={() => handleNavigation(item)}
+                          className={`flex-1 text-left px-4 py-3 font-medium transition-all duration-200 ${
+                            theme === 'dark' 
+                              ? 'text-gray-300 hover:text-white hover:bg-stone-800/50' 
+                              : 'text-black hover:text-gray-700 hover:bg-gray-100/50'
+                          }`}
+                        >
+                          <span>{t.nav[item.name as keyof typeof t.nav]}</span>
+                        </button>
+                        <button
+                          onClick={() => setIsServicesOpen(!isServicesOpen)}
+                          className={`px-4 py-3 transition-all duration-200 ${
+                            theme === 'dark' 
+                              ? 'hover:bg-stone-800/50' 
+                              : 'hover:bg-gray-100/50'
+                          }`}
+                        >
+                          <motion.div
+                            animate={{ rotate: isServicesOpen ? 45 : 0 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <Plus size={20} className="text-[#309f69]" />
+                          </motion.div>
+                        </button>
+                      </div>
+                      
+                      <AnimatePresence>
+                        {isServicesOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className={`overflow-hidden ${
+                              theme === 'dark' ? 'bg-stone-900/50' : 'bg-gray-50'
+                            }`}
+                          >
+                            {getServicesList().map((service) => {
+                              const IconComponent = service.icon
+                              return (
+                                <button
+                                  key={service.key}
+                                  onClick={() => handleServiceClick(service.link)}
+                                  className={`w-full text-left px-8 py-2 text-sm transition-all duration-200 flex items-center space-x-3 ${
+                                    theme === 'dark' 
+                                      ? 'text-gray-400 hover:text-white hover:bg-stone-800/50' 
+                                      : 'text-gray-600 hover:text-black hover:bg-gray-100/50'
+                                  }`}
+                                >
+                                  <IconComponent 
+                                    size={14} 
+                                    className="text-[#309f69] flex-shrink-0" 
+                                  />
+                                  <span>{service.title}</span>
+                                </button>
+                              )
+                            })}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => handleNavigation(item)}
+                      className={`block w-full text-left px-4 py-3 font-medium transition-all duration-200 ${
+                        theme === 'dark' 
+                          ? 'text-gray-300 hover:text-white hover:bg-stone-800/50' 
+                          : 'text-black hover:text-gray-700 hover:bg-gray-100/50'
+                      }`}
+                    >
+                      {t.nav[item.name as keyof typeof t.nav]}
+                    </button>
+                  )}
+                </div>
               ))}
               
               {/* Mobile Toggle Buttons */}

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Facebook, Linkedin } from 'lucide-react'
+import { Facebook, Linkedin, Home, Truck, Phone, BookOpen } from 'lucide-react'
 import { useTheme } from './theme-provider'
 import { useTranslation } from './translation-provider'
 import logo from '../assets/logo.png'
@@ -14,10 +14,10 @@ export function Footer() {
   const currentYear = new Date().getFullYear()
 
   const navigationLinks = [
-    { name: 'home', href: '/', sectionId: 'home' },
-    { name: 'services', href: '/#services', sectionId: 'services' },
-    { name: 'contact', href: '/#contact', sectionId: 'contact' },
-    { name: 'blog', href: '/blog', sectionId: null },
+    { name: 'home', href: '/', sectionId: 'home', icon: Home },
+    { name: 'services', href: '/#services', sectionId: 'services', icon: Truck },
+    { name: 'contact', href: '/#contact', sectionId: 'contact', icon: Phone },
+    { name: 'blog', href: '/blog', sectionId: null, icon: BookOpen },
   ]
 
   const handleNavClick = (sectionId: string | null) => {
@@ -79,31 +79,36 @@ export function Footer() {
             <ul className={`flex flex-wrap justify-center space-x-3 sm:space-x-6 md:space-x-8 ${
               theme === 'dark' ? 'text-stone-300' : 'text-gray-600'
             }`}>
-              {navigationLinks.map((link, index) => (
-                <motion.li 
-                  key={link.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  {link.sectionId ? (
-                    <button
-                      onClick={() => handleNavClick(link.sectionId)}
-                      className="hover:text-[#309f69] transition-colors duration-200"
-                    >
-                      {t.nav[link.name as keyof typeof t.nav]}
-                    </button>
-                  ) : (
-                    <Link 
-                      to={link.href}
-                      className="hover:text-[#309f69] transition-colors duration-200"
-                    >
-                      {t.nav[link.name as keyof typeof t.nav]}
-                    </Link>
-                  )}
-                </motion.li>
-              ))}
+              {navigationLinks.map((link, index) => {
+                const IconComponent = link.icon
+                return (
+                  <motion.li 
+                    key={link.name}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
+                    viewport={{ once: true }}
+                  >
+                    {link.sectionId ? (
+                      <button
+                        onClick={() => handleNavClick(link.sectionId)}
+                        className="flex items-center space-x-2 hover:text-[#309f69] transition-colors duration-200"
+                      >
+                        <IconComponent size={16} className="text-[#309f69]" />
+                        <span>{t.nav[link.name as keyof typeof t.nav]}</span>
+                      </button>
+                    ) : (
+                      <Link 
+                        to={link.href}
+                        className="flex items-center space-x-2 hover:text-[#309f69] transition-colors duration-200"
+                      >
+                        <IconComponent size={16} className="text-[#309f69]" />
+                        <span>{t.nav[link.name as keyof typeof t.nav]}</span>
+                      </Link>
+                    )}
+                  </motion.li>
+                )
+              })}
             </ul>
           </motion.div>
 
@@ -126,11 +131,11 @@ export function Footer() {
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.3 }}
                 viewport={{ once: true }}
-                className={`w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#309f69] transition-colors duration-200 ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#1877F2] transition-colors duration-200 group ${
                   theme === 'dark' ? 'bg-stone-800' : 'bg-white border border-gray-200'
                 }`}
               >
-                <Facebook size={20} />
+                <Facebook size={20} className="text-[#1877F2] group-hover:text-white transition-colors duration-200" />
               </motion.a>
               <motion.a
                 href="https://www.linkedin.com/company/weforward/"
@@ -142,11 +147,11 @@ export function Footer() {
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
                 viewport={{ once: true }}
-                className={`w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#309f69] transition-colors duration-200 ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#0A66C2] transition-colors duration-200 group ${
                   theme === 'dark' ? 'bg-stone-800' : 'bg-white border border-gray-200'
                 }`}
               >
-                <Linkedin size={20} />
+                <Linkedin size={20} className="text-[#0A66C2] group-hover:text-white transition-colors duration-200" />
               </motion.a>
             </div>
           </motion.div>

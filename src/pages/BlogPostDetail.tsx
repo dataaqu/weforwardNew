@@ -135,7 +135,7 @@ export function BlogPostDetail() {
         )}
 
         {/* Article Content Container */}
-        <div className="mx-auto w-[80vw] max-w-[80vw] px-0">
+        <div className="mx-auto w-full sm:w-[80vw] max-w-full sm:max-w-[80vw] px-4 sm:px-0">
           <motion.article
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

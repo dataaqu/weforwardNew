@@ -94,6 +94,27 @@
   --foreground: oklch(0.129 0.015 83.66); /* stone-900 for light mode */
 }
 
+/* Mobile responsive flex layout for blog content */
+@media (max-width: 768px) {
+  .flex.gap-6.my-6.items-start {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+  
+  .flex.gap-6.my-6.items-start > div {
+    width: 100% !important;
+  }
+  
+  .flex.gap-6.my-6.items-start .pl-4 {
+    padding-left: 0 !important;
+  }
+  
+  /* Prevent horizontal scroll on mobile */
+  body {
+    overflow-x: hidden !important;
+  }
+}
+
 .dark {
   --background: oklch(0.047 0.008 83.66); /* stone-950 */
   --foreground: oklch(0.984 0.003 247.858); /* white */

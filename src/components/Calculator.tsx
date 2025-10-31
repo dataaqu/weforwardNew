@@ -82,8 +82,8 @@ export function Calculator() {
     const lengthM = lengthNum / 100
     const widthM = widthNum / 100
     
-    // Calculate loading meters using the formula: LDM = (L × W) / 2.44
-    const loadingMeters = (lengthM * widthM) / 2.44
+    // Calculate loading meters using the formula: LDM = (L × W) / 2.4
+    const loadingMeters = (lengthM * widthM) / 2.4
     
     // Calculate chargeable weight using the formula: (L × W × H) / 6000
     const chargeableWeight = (lengthNum * widthNum * heightNum) / 6000

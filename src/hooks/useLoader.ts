@@ -13,7 +13,7 @@ import roadServiceImg from '../assets/road service.webp'
 import seaServiceImg from '../assets/sea service.webp'
 import railServiceImg from '../assets/rail service.webp'
 import warehouseServiceImg from '../assets/warehouse service.webp'
-import brokageServiceImg from '../assets/brockage service.webp'
+import brokerageServiceImg from '../assets/brokerage service.webp'
 
 export function useLoader(minLoadTime: number = 3000) {
   // Check if loader has been shown in this session
@@ -34,7 +34,7 @@ export function useLoader(minLoadTime: number = 3000) {
     seaServiceImg,
     railServiceImg,
     warehouseServiceImg,
-    brokageServiceImg
+    brokerageServiceImg
   ]
 
   useEffect(() => {

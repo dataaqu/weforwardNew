@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion'
 import { SEO, StructuredData, generateStructuredData } from '../lib/seo'
 import { useTheme } from '../components/theme-provider'
@@ -49,7 +50,7 @@ export function BlogPage() {
       author: (language === 'en' ? post.author : post.authorKa) || 'WeForward Team',
       image: post.featuredImage?.startsWith('http') 
         ? post.featuredImage 
-        : `https://weforward.ge${post.featuredImage}`,
+        : 'https://weforward.ge/shareimg.png',
       description: (language === 'en' ? post.metaDescription : post.metaDescriptionKa) || 
                   (language === 'en' ? post.excerpt : post.excerptKa)
     }))
@@ -60,15 +61,38 @@ export function BlogPage() {
     ? `Latest blog posts from WeForward - insights on logistics, technology, and industry trends. Read articles about ${posts.slice(0, 3).map(p => language === 'en' ? p.title : p.titleKa).join(', ')}.`
     : "Our blog is coming soon! Stay tuned for articles about logistics, technology trends, and industry insights.";
 
-  // Create Open Graph image - use the first post's featured image or default
-  const ogImage = posts.length > 0 && posts[0].featuredImage
-    ? (posts[0].featuredImage.startsWith('http') 
-        ? posts[0].featuredImage 
-        : `https://weforward.ge${posts[0].featuredImage}`)
-    : 'https://weforward.ge/favicon.png';
+  // Create Open Graph image - always use shareimg.png for consistent branding
+  const ogImage = 'https://weforward.ge/shareimg.png';
 
   return (
     <>
+      {/* React Helmet for Blog Page */}
+      <Helmet>
+        <title>{language === 'en' ? 'Blog' : 'ბლოგი'} | WeForward</title>
+        <meta name="description" content={metaDescription} />
+        <meta name="keywords" content="blog, logistics, freight, shipping, technology, WeForward, cargo transport, supply chain, industry insights" />
+        
+        {/* Open Graph tags */}
+        <meta property="og:title" content={`${language === 'en' ? 'Blog' : 'ბლოგი'} - WeForward`} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:url" content="https://weforward.ge/blog" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="WeForward" />
+        
+        {/* Twitter Card tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${language === 'en' ? 'Blog' : 'ბლოგი'} - WeForward`} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={ogImage} />
+        <meta name="twitter:site" content="@WeForward" />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://weforward.ge/blog" />
+      </Helmet>
+
       {/* Enhanced SEO for Blog Page */}
       <SEO 
         title={`${language === 'en' ? 'Blog' : 'ბლოგი'} - WeForward`}

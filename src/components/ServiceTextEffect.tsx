@@ -43,7 +43,9 @@ export function ServiceTextEffect({ serviceKey }: ServiceTextEffectProps) {
   };
 
   return (
-    <h1 lang={language} className="text-5xl font-bold">
+    <h1 lang={language} className={`font-bold ${
+      serviceKey === 'warehouse' ? 'text-3xl md:text-5xl' : 'text-5xl'
+    }`}>
       {renderTitle()}
     </h1>
   );

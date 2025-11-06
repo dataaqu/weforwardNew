@@ -25,14 +25,6 @@ export function Memberships() {
       viaColor: '#2ff9c3',
       toColor: '#4fd1c5',
     },
-      {
-      id: 3,
-      key: 'tct' as const,
-      logo: logo3,
-      fromColor: '#309f69',
-      viaColor: '#2ff9c3',
-      toColor: '#4fd1c5',
-    },
     {
       id: 2,
       key: 'wca' as const,
@@ -41,7 +33,14 @@ export function Memberships() {
       viaColor: '#2ff9c3',
       toColor: '#4fd1c5',
     },
-  
+    {
+      id: 3,
+      key: 'tct' as const,
+      logo: logo3,
+      fromColor: '#309f69',
+      viaColor: '#2ff9c3',
+      toColor: '#4fd1c5',
+    },
     {
       id: 4,
       key: 'iata' as const,

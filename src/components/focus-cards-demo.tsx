@@ -8,7 +8,7 @@ import roadServiceImg from '../assets/road service.webp';
 import seaServiceImg from '../assets/sea service.webp';
 import railServiceImg from '../assets/rail service.webp';
 import warehouseServiceImg from '../assets/warehouse service.webp';
-import brokageServiceImg from '../assets/brockage service.webp';
+import brokerageServiceImg from '../assets/brokerage service.webp';
 
 export function FocusCardsDemo() {
   const { t } = useTranslation();
@@ -46,7 +46,7 @@ export function FocusCardsDemo() {
     },
     {
       title: t.services.services.brokerage.title,
-      src: brokageServiceImg,
+      src: brokerageServiceImg,
       description: t.services.services.brokerage.description,
       link: '/services/brokerage'
     },

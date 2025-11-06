@@ -120,8 +120,8 @@ export function AnimatedTabs() {
               onClick={() => handleTabClick(tab)}
               className={`inline-flex h-12 w-12 items-center justify-center rounded-lg transition-all duration-300 transform ${
                 isActive 
-                  ? 'text-white bg-white/20 scale-110 shadow-md' 
-                  : 'text-white/70 hover:text-white hover:bg-white/10 hover:scale-105'
+                  ? 'text-black bg-white/20 scale-110 shadow-md' 
+                  : 'text-black/70 hover:text-black hover:bg-white/10 hover:scale-105'
               }`}
               title={tab.label}
             >

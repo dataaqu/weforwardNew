@@ -32,7 +32,7 @@ export function SEO({
   title = 'WeForward - Professional Logistics Solutions',
   description = 'WeForward delivers exceptional logistics services across Air, Road, Sea, and Rail transport. Founded in 2009, we provide reliable cargo shipping with 35K+ successful shipments.',
   keywords = 'logistics, cargo shipping, air transport, road transport, sea transport, rail transport, WeForward, shipping solutions',
-  ogImage = '/favicon.png',
+  ogImage = '/shareimg.png',
   canonicalUrl,
   noIndex = false,
   ogType = 'website',
@@ -82,7 +82,8 @@ export function SEO({
     // Open Graph tags
     updateMetaTag('og:title', fullTitle, true)
     updateMetaTag('og:description', description, true)
-    updateMetaTag('og:image', ogImage, true)
+    const fullOgImageUrl = ogImage.startsWith('http') ? ogImage : `https://weforward.ge${ogImage}`
+    updateMetaTag('og:image', fullOgImageUrl, true)
     updateMetaTag('og:image:width', '1200', true)
     updateMetaTag('og:image:height', '630', true)
     updateMetaTag('og:image:alt', fullTitle, true)
@@ -133,7 +134,7 @@ export function SEO({
     updateMetaTag('twitter:card', 'summary_large_image')
     updateMetaTag('twitter:title', fullTitle)
     updateMetaTag('twitter:description', description)
-    updateMetaTag('twitter:image', ogImage)
+    updateMetaTag('twitter:image', fullOgImageUrl)
     updateMetaTag('twitter:image:alt', fullTitle)
     updateMetaTag('twitter:site', '@WeForward')
     updateMetaTag('twitter:creator', '@WeForward')

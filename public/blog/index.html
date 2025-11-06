@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog - WeForward | Latest Logistics Insights</title>
+    
+    <!-- Meta Description for Blog Page -->
+    <meta name="description" content="Read the latest insights from WeForward's blog about logistics, freight, shipping, and global supply chain trends. Expert insights on air, sea, rail, and road transport." />
+    
+    <!-- Open Graph Meta Tags for Blog -->
+    <meta property="og:title" content="WeForward Blog - Logistics & Freight Insights" />
+    <meta property="og:description" content="Expert insights on global logistics, air freight, sea freight, rail transport, road transport, customs brokerage, and warehousing from WeForward's industry professionals." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://weforward.ge/blog" />
+    <meta property="og:image" content="https://weforward.ge/shareimg.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="WeForward - Global Logistics Solutions" />
+    <meta property="og:site_name" content="WEFORWARD" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="article:author" content="WeForward Team" />
+    <meta property="article:section" content="Logistics" />
+    <meta property="article:tag" content="logistics" />
+    <meta property="article:tag" content="freight" />
+    <meta property="article:tag" content="shipping" />
+    <meta property="article:tag" content="transport" />
+    
+    <!-- Twitter Card Meta Tags for Blog -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="WeForward Blog - Logistics & Freight Insights" />
+    <meta name="twitter:description" content="Expert insights on global logistics, air freight, sea freight, rail transport, road transport, customs brokerage, and warehousing from WeForward's industry professionals." />
+    <meta name="twitter:image" content="https://weforward.ge/shareimg.png" />
+    <meta name="twitter:image:alt" content="WeForward - Global Logistics Solutions" />
+
+    <!-- Additional Meta Tags -->
+    <meta name="author" content="WEFORWARD" />
+    <meta name="keywords" content="blog, logistics, freight, shipping, WeForward, supply chain, transport, industry insights, cargo" />
+    
+    <!-- Redirect to main app after Facebook scraper reads meta tags -->
+    <script>
+      // Check if this is a bot/crawler
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isBot = /bot|crawler|spider|crawling|facebook|twitter|whatsapp|telegram|linkedin/i.test(userAgent);
+      
+      if (!isBot) {
+        // Redirect to React app for real users
+        window.location.replace('/');
+      }
+    </script>
+    
+    <script>
+      // Prevent flash of light theme
+      (function() {
+        const theme = localStorage.getItem('weforward-ui-theme') || 'dark';
+        if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.add('light');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root">
+      <!-- Fallback content for crawlers -->
+      <header>
+        <h1>WeForward Blog - Latest Logistics Insights</h1>
+      </header>
+      <main>
+        <p>Read the latest insights from WeForward's blog about logistics, freight, shipping, and global supply chain trends.</p>
+        <a href="https://weforward.ge/">Visit WeForward</a>
+      </main>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

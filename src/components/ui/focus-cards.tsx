@@ -50,7 +50,7 @@ export const Card = React.memo(
           <h3 className="uppercase text-2xl md:text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-[#309f69] to-[#2ff9c3] mb-4 text-center">
             {card.title}
           </h3>
-          <p className="text-sm md:text-base text-gray-200 text-center leading-relaxed">
+          <p className="text-sm md:text-base text-gray-200 text-center leading-relaxed font-firago">
             {card.description}
           </p>
         </div>

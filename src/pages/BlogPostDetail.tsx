@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { SEO, StructuredData, generateStructuredData } from '../lib/seo';
 import { useTheme } from '../components/theme-provider';
@@ -69,10 +70,12 @@ export function BlogPostDetail() {
   const tags = language === 'en' ? post.tags : post.tagsKa;
   const author = language === 'en' ? post.author : post.authorKa;
   
-  // Create full image URL for social media
+  // Create full image URL for social media - use post's featured image or fallback to shareimg.png
   const fullImageUrl = post.featuredImage?.startsWith('http') 
     ? post.featuredImage 
-    : `https://weforward.ge${post.featuredImage}`;
+    : post.featuredImage 
+    ? `https://weforward.ge${post.featuredImage}`
+    : 'https://weforward.ge/shareimg.png';
 
   // Create structured data for the blog post
   const blogPostStructuredData = generateStructuredData.article(
@@ -86,6 +89,44 @@ export function BlogPostDetail() {
 
   return (
     <>
+      {/* React Helmet for dynamic meta tags */}
+      <Helmet>
+        <title>{title} | WeForward</title>
+        <meta name="description" content={metaDescription || excerpt} />
+        <meta name="keywords" content={`${tags.join(', ')}, WeForward, blog, logistics`} />
+        <meta name="author" content={author || 'WeForward Team'} />
+        
+        {/* Open Graph tags */}
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={metaDescription || excerpt} />
+        <meta property="og:image" content={fullImageUrl} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={title} />
+        <meta property="og:url" content={`https://weforward.ge/blog/${post.slug}`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="WeForward" />
+        <meta property="article:author" content={author || 'WeForward Team'} />
+        <meta property="article:published_time" content={post.publishedAt?.toISOString() || post.createdAt.toISOString()} />
+        <meta property="article:modified_time" content={post.updatedAt.toISOString()} />
+        <meta property="article:section" content={language === 'en' ? post.category : post.categoryKa} />
+        {tags.map(tag => (
+          <meta key={tag} property="article:tag" content={tag} />
+        ))}
+        
+        {/* Twitter Card tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={metaDescription || excerpt} />
+        <meta name="twitter:image" content={fullImageUrl} />
+        <meta name="twitter:image:alt" content={title} />
+        <meta name="twitter:site" content="@WeForward" />
+        <meta name="twitter:creator" content="@WeForward" />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href={`https://weforward.ge/blog/${post.slug}`} />
+      </Helmet>
+      
       {/* Enhanced SEO with Open Graph and Twitter Cards */}
       <SEO 
         title={title}

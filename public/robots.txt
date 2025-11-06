@@ -16,6 +16,7 @@ Disallow: *.tsx$
 # Allow important files
 Allow: /robots.txt
 Allow: /favicon.png
+Allow: /logo.png
 Allow: /assets/
 
 # Crawl delay (optional)

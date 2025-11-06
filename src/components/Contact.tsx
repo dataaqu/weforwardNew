@@ -8,7 +8,7 @@ import { emailjsConfig } from '../config/emailjs'
 
 export function Contact() {
   const { theme } = useTheme()
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
   const formRef = useRef<HTMLFormElement>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
@@ -131,7 +131,7 @@ export function Contact() {
               }`}>
                 {t.contact.subtitle}
               </h3>
-              <p className={`mb-8 ${
+              <p className={`mb-8 font-firago font-bold ${
                 theme === 'dark' ? 'text-stone-300' : 'text-gray-700'
               }`}>
                 {t.contact.description}
@@ -157,7 +157,7 @@ export function Contact() {
                 <div>
                   <a 
                     href="mailto:sales@weforward.ge" 
-                    className={`hover:text-[#309f69] transition-colors duration-200 ${
+                    className={`hover:text-[#309f69] transition-colors duration-200 font-firago font-bold ${
                       theme === 'dark' ? 'text-stone-300' : 'text-gray-700'
                     }`}
                   >
@@ -183,20 +183,20 @@ export function Contact() {
                 <div className="flex space-x-3">
                   <a 
                     href="tel:+995591321292" 
-                    className={`hover:text-[#309f69] transition-colors duration-200 ${
+                    className={`hover:text-[#309f69] transition-colors duration-200 font-firago font-bold ${
                       theme === 'dark' ? 'text-stone-300' : 'text-gray-700'
                     }`}
                   >
-                    591 32 12 92
+                    +995 591 32 12 92
                   </a>
                   <span className={theme === 'dark' ? 'text-stone-500' : 'text-gray-400'}>|</span>
                   <a 
                     href="tel:+995593188198" 
-                    className={`hover:text-[#309f69] transition-colors duration-200 ${
+                    className={`hover:text-[#309f69] transition-colors duration-200 font-firago font-bold ${
                       theme === 'dark' ? 'text-stone-300' : 'text-gray-700'
                     }`}
                   >
-                    593 18 81 98
+                    +995 593 18 81 98
                   </a>
                 </div>
               </motion.div>
@@ -220,7 +220,7 @@ export function Contact() {
                     href="https://maps.app.goo.gl/CgzwPiYwyA9986ta9" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className={`hover:text-[#309f69] transition-colors duration-200 ${
+                    className={`hover:text-[#309f69] transition-colors duration-200 font-firago font-bold ${
                       theme === 'dark' ? 'text-stone-300' : 'text-gray-700'
                     }`}
                   >
@@ -417,18 +417,16 @@ export function Contact() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 1.0 }}
                 viewport={{ once: true }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 ${
+                className={`w-full px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity flex items-center justify-center space-x-2 ${
                   isSubmitting 
                     ? 'bg-stone-400 cursor-not-allowed text-stone-600' 
-                    : 'bg-[#309f69] hover:bg-[#2a8959] text-white'
+                    : 'bg-gradient-to-r from-[#309f69] to-[#2ff9c3] text-black'
                 }`}
               >
-                <Send size={20} />
-                <span>{isSubmitting ? t.contact.form.sending : t.contact.form.sendButton}</span>
+                <Send size={20} className="text-black" />
+                <span className={`font-bold ${language === 'en' ? 'font-bankgothic' : 'font-firago'}`}>{isSubmitting ? t.contact.form.sending : t.contact.form.sendButton}</span>
               </motion.button>
 
               {/* Status Messages */}
@@ -436,7 +434,7 @@ export function Contact() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-green-600 dark:text-green-400 text-center p-3 bg-green-100 dark:bg-green-900/20 rounded-lg border border-green-300 dark:border-green-700"
+                  className="text-green-600 dark:text-green-400 text-center p-3 bg-green-100 dark:bg-green-900/20 rounded-lg border border-green-300 dark:border-green-700 font-firago font-bold"
                 >
                   ✅ {t.contact.success.title.replace('!', '')}! {t.contact.success.message.split('.')[0]}.
                 </motion.div>
@@ -446,7 +444,7 @@ export function Contact() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-red-600 dark:text-red-400 text-center p-3 bg-red-100 dark:bg-red-900/20 rounded-lg border border-red-300 dark:border-red-700"
+                  className="text-red-600 dark:text-red-400 text-center p-3 bg-red-100 dark:bg-red-900/20 rounded-lg border border-red-300 dark:border-red-700 font-firago font-bold"
                 >
                   ❌ {t.contact.error.message}
                 </motion.div>
@@ -522,7 +520,7 @@ export function Contact() {
                   {t.contact.success.title}
                 </h3>
                 
-                <p className={`text-lg mb-6 leading-relaxed ${
+                <p className={`text-lg mb-6 leading-relaxed font-firago font-bold ${
                   theme === 'dark' ? 'text-stone-300' : 'text-gray-700'
                 }`}>
                   {t.contact.success.message}
@@ -532,7 +530,7 @@ export function Contact() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setSubmitStatus('idle')}
-                  className="w-full bg-gradient-to-r from-[#309f69] to-[#2ff9c3] text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 hover:shadow-lg"
+                  className="w-full bg-gradient-to-r from-[#309f69] to-[#2ff9c3] text-white  py-3 px-6 rounded-lg transition-all duration-200 hover:shadow-lg font-firago font-bold"
                 >
                   {t.contact.success.button}
                 </motion.button>

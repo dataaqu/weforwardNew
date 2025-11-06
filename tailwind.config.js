@@ -6,8 +6,12 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        'max-hero': {'max': '1119px'},
+      },
       fontFamily: {
         'bankgothic': ['BankGothic', 'sans-serif'],
+        'firago': ['FiraGO', 'sans-serif'],
       },
       animation: {
         marquee: "marquee var(--duration) linear infinite",

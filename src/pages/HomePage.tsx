@@ -12,10 +12,10 @@ export function HomePage() {
     <>
       {/* SEO Meta Tags */}
       <SEO
-        title="WEFORWARD - Logistic solutions"
-        description="Transform your ideas into stunning web applications with cutting-edge technology, beautiful design, and seamless user experiences. Expert web development, mobile apps, and digital solutions."
-        keywords="web development, mobile apps, UI/UX design, React, TypeScript, digital solutions, software development"
-        canonicalUrl="https://weforward.dev"
+        title="WEFORWARD - Global Logistics Solutions"
+        description="WeForward - Global logistics solutions provider offering air, sea, rail, and road freight services. Expert customs brokerage and warehousing services worldwide."
+        keywords="logistics, freight, shipping, air freight, sea freight, rail freight, road freight, customs brokerage, warehousing, Georgia, global logistics"
+        canonicalUrl="https://weforward.ge"
       />
 
       <main className="relative">

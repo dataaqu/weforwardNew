@@ -3,6 +3,18 @@ RewriteBase /
 
 # Handle Angular and React Router
 RewriteRule ^index\.html$ - [L]
+
+# Special handling for blog URLs to serve with proper meta tags for ALL crawlers
+RewriteCond %{HTTP_USER_AGENT} (bot|crawler|spider|scraper|facebook|twitter|whatsapp|telegram|linkedin|skype) [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} (facebookexternalhit|Twitterbot|WhatsAppBot|TelegramBot|LinkedInBot|SkypeUriPreview) [NC]
+RewriteRule ^blog/?$ /blog/index.html [L]
+
+# For blog post URLs, serve the blog index with proper meta tags for social crawlers  
+RewriteCond %{HTTP_USER_AGENT} (bot|crawler|spider|scraper|facebook|twitter|whatsapp|telegram|linkedin|skype) [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} (facebookexternalhit|Twitterbot|WhatsAppBot|TelegramBot|LinkedInBot|SkypeUriPreview) [NC]
+RewriteRule ^blog/.*$ /blog/index.html [L]
+
+# Default React Router handling
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.html [L]

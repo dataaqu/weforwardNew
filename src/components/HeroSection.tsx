@@ -43,9 +43,7 @@ const RotateWords = ({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
-          className={`text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3] ${
-            language === 'ka' ? 'text-2xl sm:text-3xl lg:text-4xl leading-tight' : 'text-3xl sm:text-4xl lg:text-5xl'
-          }`}
+          className={`text-transparent bg-clip-text bg-gradient-to-r from-[#309f69] to-[#2ff9c3] text-3xl sm:text-4xl lg:text-5xl max-hero:lg:text-4xl leading-tight`}
           style={language === 'ka' ? { lineHeight: '1.2' } : {}}
         >
           {words[index]}
@@ -124,16 +122,18 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.4 }}
-              className={`text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight ${
+              className={`text-3xl sm:text-4xl lg:text-5xl max-hero:lg:text-4xl font-bold leading-tight ${
                 theme === 'dark' ? 'text-white' : 'text-black'
               }`}
             >
-              <span className="block mb-2">YOU DEAL</span>
-              <RotateWords
-                text="WE DELIVER"
-                words={language === 'en' ? ["AIR", "ROAD", "SEA", "RAIL"] : ["საჰაერო", "სახმელეთო", "საზღვაო", "სარკინიგზო"]}
-                language={language}
-              />
+              <span className={`block mb-2 ${language === 'ka' ? 'font-firago' : ''}`}>YOU DEAL</span>
+              <div className={language === 'ka' ? 'font-firago' : ''}>
+                <RotateWords
+                  text="WE DELIVER"
+                  words={language === 'en' ? ["AIR", "ROAD", "SEA", "RAIL"] : ["საჰაერო", "სახმელეთო", "საზღვაო", "სარკინიგზო"]}
+                  language={language}
+                />
+              </div>
             </motion.h1>
 
             {/* Description */}
@@ -145,7 +145,7 @@ export function HeroSection() {
                 delay: 0.6,
                 ease: "easeOut"
               }}
-              className={`text-lg sm:text-xl leading-relaxed ${
+              className={`text-lg sm:text-xl leading-relaxed ${language === 'ka' ? 'font-firago' : 'font-firago'} ${
                 theme === 'dark' ? 'text-stone-300' : 'text-gray-700'
               }`}
             >
@@ -200,7 +200,7 @@ export function HeroSection() {
                     +
                   </motion.span>
                 </div>
-                <div className={`text-xs font-medium ${
+                <div className={`text-xs font-bold ${language === 'ka' ? 'font-firago font-bold' : 'font-firago'} ${
                   theme === 'dark' ? 'text-stone-400' : 'text-gray-600'
                 }`}>
                   {t.hero.stats.cargoShipped}
@@ -234,7 +234,7 @@ export function HeroSection() {
                     +
                   </motion.span>
                 </div>
-                <div className={`text-xs font-medium ${
+                <div className={`text-xs font-bold ${language === 'ka' ? 'font-firago font-bold' : 'font-firago'} ${
                   theme === 'dark' ? 'text-stone-400' : 'text-gray-600'
                 }`}>
                   {t.hero.stats.trustedPartners}
@@ -268,7 +268,7 @@ export function HeroSection() {
                     +
                   </motion.span>
                 </div>
-                <div className={`text-xs font-medium ${
+                <div className={`text-xs font-bold ${language === 'ka' ? 'font-firago font-bold' : 'font-firago'} ${
                   theme === 'dark' ? 'text-stone-400' : 'text-gray-600'
                 }`}>
                   {t.hero.stats.happyCustomers}

@@ -20,7 +20,7 @@ export function Partners() {
   const { t } = useTranslation()
 
   const partners = [
-   
+    { id: 1, name: 'Maersk', logo: maerskLogo },
     { id: 2, name: 'Turkish Airlines', logo: turkishAirlinesLogo },
     { id: 3, name: 'Qatar Airways', logo: qatarAirwaysLogo },
     { id: 4, name: 'Evergreen Marine', logo: evergreenLogo },
@@ -31,7 +31,6 @@ export function Partners() {
     { id: 9, name: 'COSCO Shipping', logo: coscoLogo },
     { id: 10, name: 'CMA CGM', logo: cmaCgmLogo },
     { id: 11, name: 'MSC', logo: mscLogo },
-     { id: 1, name: 'Maersk', logo: maerskLogo },
   ]
 
   return (
